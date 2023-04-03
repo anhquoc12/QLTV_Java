@@ -1,0 +1,56 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Mar 21, 2023, 12:38:59 AM
+    Author     : dell
+*/
+
+*
+{
+    -fx-font-family: Tahoma;
+    -fx-font-size: 1em;
+}
+
+
+.title
+{
+    -fx-fill: lightgreen;
+    -fx-font-size: 30;
+    -fx-stroke-width: 5;
+    -fx-stroke: darkblue;
+}
+
+.input
+{
+    -fx-pref-width: 400;
+}
+
+VBox
+{
+    -fx-padding: 24;
+    -fx-spacing: 10;
+    -fx-background-color: lightblue;
+    -fx-alignment: CENTER;
+}
+
+HBox
+{
+    -fx-spacing: 150;
+}
+.field
+{
+    -fx-pref-width: 150;
+}
+
+.h1
+{
+    -fx-font-size: 24;
+    -fx-font-weight: BOLD;
+}
+
+.menuitem
+{
+    -fx-font-size: 0.5em;
+}
