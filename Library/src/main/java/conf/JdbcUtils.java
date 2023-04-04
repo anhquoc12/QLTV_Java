@@ -28,6 +28,6 @@ public class JdbcUtils {
      * @throws java.sql.SQLException
      */
     public static Connection getConn() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost/qltv_db", "root", "Admin@123");
+        return DriverManager.getConnection("jdbc:mysql://localhost/qltv_db", "root", "Cuongzxcv1102");
     }
 }

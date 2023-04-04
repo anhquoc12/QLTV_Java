@@ -22,16 +22,16 @@
             <Label layoutX="28.0" layoutY="131.0" text="Đối Tượng:" />
             <Label layoutX="27.0" layoutY="186.0" text="Số Điện Thoại:" />
             <Button layoutX="42.0" layoutY="249.0" mnemonicParsing="false" onAction="#lapPhieuHandler" text="Lập phiếu" />
-            <Button layoutX="261.0" layoutY="249.0" mnemonicParsing="false" text="Hủy" />
+            <Button layoutX="261.0" layoutY="249.0" mnemonicParsing="false" onAction="#exitHandler" text="Thoát" />
             <Label fx:id="lblDoiTuong" layoutX="195.0" layoutY="131.0" />
             <Label fx:id="lblSoDienThoai" layoutX="195.0" layoutY="186.0" />
-            <Button layoutX="154.0" layoutY="249.0" mnemonicParsing="false" text="Đặt sách" />
+            <Button layoutX="154.0" layoutY="249.0" mnemonicParsing="false" onAction="#lapPhieuDatHandler" text="Đặt sách" />
          </children>
       </AnchorPane>
       <AnchorPane prefHeight="392.0" prefWidth="934.0">
          <children>
             <TableView fx:id="tbSachMuon" layoutX="4.0" layoutY="30.0" prefHeight="278.0" prefWidth="387.0" />
-            <Label layoutX="14.0" layoutY="22.0" text="Danh sách mượn:" />
+            <Label layoutX="14.0" layoutY="8.0" text="Danh sách mượn:" />
             <TableView fx:id="tbSach" layoutX="397.0" layoutY="58.0" prefHeight="278.0" prefWidth="526.0" />
             <TextField fx:id="txtTimKiemSach" layoutX="397.0" layoutY="17.0" prefHeight="26.0" prefWidth="333.0" promptText="Nhâp thông tin sách..." />
             <ComboBox fx:id="cbTimKiemSach" layoutX="754.0" layoutY="17.0" prefWidth="150.0" />
