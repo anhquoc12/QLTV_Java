@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="678.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.anhquoc0304.library.TraSachController">
+   <children>
+      <TableView fx:id="tbPhieuMuon" layoutX="88.0" layoutY="258.0" onMouseClicked="#rowClick" prefHeight="318.0" prefWidth="491.0" />
+      <Button layoutX="111.0" layoutY="595.0" mnemonicParsing="false" text="Trả sách" />
+      <Button layoutX="233.0" layoutY="595.0" mnemonicParsing="false" text="Xác nhận đặt" />
+      <Button layoutX="387.0" layoutY="595.0" mnemonicParsing="false" text="Hủy đặt" />
+      <Button layoutX="506.0" layoutY="595.0" mnemonicParsing="false" text="Thoát" />
+      <TextField fx:id="txtTimKiem" layoutX="90.0" layoutY="218.0" prefHeight="26.0" prefWidth="293.0" promptText="Nhập thông tin phiếu mượn..." />
+      <ComboBox fx:id="cbPhieuMuon" layoutX="429.0" layoutY="219.0" prefWidth="150.0" />
+      <Label layoutX="88.0" layoutY="43.0" text="Mã độc giả:" />
+      <Label layoutX="88.0" layoutY="76.0" text="Tên độc giả:" />
+      <Label layoutX="88.0" layoutY="114.0" text="Ngày sinh:" />
+      <Label layoutX="88.0" layoutY="155.0" text="Đối tượng:" />
+      <Label layoutX="373.0" layoutY="43.0" text="Mã phiếu:" />
+      <Label layoutX="373.0" layoutY="76.0" text="Ngày lập phiếu:" />
+      <Label layoutX="373.0" layoutY="114.0" text="Số lượng mượn:" />
+      <Label layoutX="373.0" layoutY="155.0" text="Trạng thái:" />
+      <Label fx:id="lblMaDocGia" layoutX="219.0" layoutY="43.0" text="Label" />
+      <Label fx:id="lblTenDocGia" layoutX="219.0" layoutY="76.0" text="Label" />
+      <Label fx:id="lblNgaySinh" layoutX="219.0" layoutY="114.0" text="Label" />
+      <Label fx:id="lblDoiTuong" layoutX="219.0" layoutY="155.0" text="Label" />
+      <Label fx:id="lblMaPhieuMuon" layoutX="478.0" layoutY="43.0" text="Label" />
+      <Label fx:id="lblNgayMuon" layoutX="504.0" layoutY="76.0" text="Label" />
+      <Label fx:id="lblSoLuong" layoutX="504.0" layoutY="114.0" text="Label" />
+      <Label fx:id="lblTrangThai" layoutX="490.0" layoutY="155.0" text="Label" />
+   </children>
+</AnchorPane>
