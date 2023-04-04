@@ -183,11 +183,41 @@ public class ReaderController implements Initializable {
     }
     
     @FXML
-    public void SaveClick(ActionEvent event)
+    public void SaveClick(ActionEvent event) throws SQLException
     {
         if (tgAdd.isSelected())
         {
+            new General().MessageBox("Thông Báo", "Thêm Thành Công", Alert.AlertType.INFORMATION).showAndWait();
+            String id = txtID.getText();
+            String name = txtName.getText();
+            String gender = comGender.getValue().toString();
+            LocalDate ngaysinh = datengaySinh.getValue();
+            int day = ngaysinh.getDayOfMonth();
+            int month = ngaysinh.getMonthValue();
+            int year = ngaysinh.getYear() - 1990;
+            Date birthday = new Date(year, month, day);
+            String object = comObject.getValue().toString();
+            String bophan = txtBoPhan.getText();
+            LocalDate ngayLapthe = dateNgayLapThe.getValue();
+            day = ngayLapthe.getDayOfMonth();
+            month = ngayLapthe.getMonthValue();
+            year = ngayLapthe.getYear() - 1990;
+            Date createdday = new Date(year, month, day);
+            String email = txtEmail.getText();
+            String address = txtAddress.getText();
+            String phone = txtPhone.getText();
             
+            DocGia r = new DocGia(id, name, DocGia.Gender.valueOf(gender), birthday, DocGia.Object.valueOf(object),
+            createdday, phone, address, bophan, email);
+            
+            if (new DocGiaServices().AddReader(r))
+            {
+                new General().MessageBox("Thông Báo", "Thêm Thành Công", Alert.AlertType.INFORMATION).showAndWait();
+            }
+            else
+            {
+                new General().MessageBox("Thông Báo", "Thêm Thất Bại", Alert.AlertType.ERROR).showAndWait();
+            }
         }
     }
     

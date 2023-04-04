@@ -77,7 +77,7 @@ public class DocGiaServices {
         return readers;
     }
 
-    public boolean AddBook(DocGia s) throws SQLException {
+    public boolean AddReader(DocGia s) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
 
             String sql = "INSERT INTO DocGia(maDocGia, tenDocGia, gioiTinh, ngaySinh, doiTuong, ngayLapThe, soDT, diaChi, boPhan, email)";
