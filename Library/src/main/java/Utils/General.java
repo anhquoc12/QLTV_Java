@@ -71,6 +71,13 @@ public class General {
 
     }
 
+    public int Quarter(DatePicker dp) {
+        LocalDate selectedDate = dp.getValue();
+        int selectedMonth = selectedDate.getMonthValue();
+        return (selectedMonth - 1) / 3 + 1;
+
+    }
+
     public static void main(String[] args) throws SQLException {
     }
 }

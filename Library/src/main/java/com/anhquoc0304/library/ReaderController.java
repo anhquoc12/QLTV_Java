@@ -29,7 +29,10 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
+import pojo.DocGia.Gender;
+import pojo.DocGia.Object;
 
 /**
  * FXML Controller class
@@ -46,13 +49,13 @@ public class ReaderController implements Initializable {
     @FXML
     private TextField txtName;
     @FXML
-    private ComboBox<DocGia.Gender> comGender;
+    private ComboBox<String> comGender;
     @FXML
     private DatePicker datengaySinh;
     @FXML
     private DatePicker dateNgayLapThe;
     @FXML
-    private ComboBox<Object> comObject;
+    private ComboBox<String> comObject;
     @FXML
     private TextField txtBoPhan;
     @FXML
@@ -71,8 +74,6 @@ public class ReaderController implements Initializable {
     private TextField txtSearch;
     @FXML
     private TableView tbReader;
-    @FXML
-    private Button btnSave;
 
     @Override
 
@@ -84,12 +85,8 @@ public class ReaderController implements Initializable {
         tgEdit.setToggleGroup(tgReader);
         tgDelete.setToggleGroup(tgReader);
         // Set combobox
-        for (DocGia.Gender value : DocGia.Gender.values()) {
-            comGender.getItems().add(value);
-        }
-        for (DocGia.Object value : DocGia.Object.values()) {
-            comObject.getItems().add(value);
-        }
+        comGender.getItems().addAll("NAM", "NU");
+        comObject.getItems().addAll("STUDENT", "TEACHER", "EMPLOYEE");
 
         // Set tableview
         LoadTableView();
@@ -113,9 +110,9 @@ public class ReaderController implements Initializable {
             DocGia r = ds.FirstReader();
             txtID.setText(r.getMaDocGia());
             txtName.setText(r.getTenDocGia());
-            comGender.setValue(r.getGioiTinh());
+            comGender.setValue(r.getGioiTinh().toString());
             datengaySinh.setValue(new General().ConvertDateToLocalDate(r.getNgaySinh()));
-            comObject.setValue(r.getDoiTuong());
+            comObject.setValue(r.getDoiTuong().toString());
             txtBoPhan.setText(r.getBoPhan());
             txtEmail.setText(r.getEmail());
             txtPhone.setText(r.getSoDT());
@@ -165,13 +162,14 @@ public class ReaderController implements Initializable {
         if (r != null) {
             txtID.setText(r.getMaDocGia());
             txtName.setText(r.getTenDocGia());
-            comGender.setValue(r.getGioiTinh());
+            comGender.setValue(r.getGioiTinh().toString());
             datengaySinh.setValue(new General().ConvertDateToLocalDate(r.getNgaySinh()));
-            comObject.setValue(r.getDoiTuong());
+            comObject.setValue(r.getDoiTuong().toString());
             txtBoPhan.setText(r.getBoPhan());
             txtEmail.setText(r.getEmail());
             txtPhone.setText(r.getSoDT());
             txtAddress.setText(r.getDiaChi());
+            dateNgayLapThe.setValue(new General().ConvertDateToLocalDate(r.getNgayLapThe()));
         }
     }
 
@@ -181,45 +179,88 @@ public class ReaderController implements Initializable {
         txtID.setText(key.ID_4("DG", new DocGiaServices().LastKey_Reader()));
         dateNgayLapThe.setValue(LocalDate.now());
     }
-    
-    @FXML
-    public void SaveClick(ActionEvent event) throws SQLException
-    {
-        if (tgAdd.isSelected())
-        {
+
+    public void AddReader() throws SQLException {
+        String id = txtID.getText();
+        String name = txtName.getText();
+        String gender = comGender.getValue();
+        LocalDate ngaysinh = datengaySinh.getValue();
+        int day = ngaysinh.getDayOfMonth();
+        int month = ngaysinh.getMonthValue();
+        int year = ngaysinh.getYear() - 1990;
+        Date birthday = new Date(year, month, day);
+        String object = comObject.getValue();
+        String bophan = txtBoPhan.getText();
+        LocalDate ngayLapthe = dateNgayLapThe.getValue();
+        day = ngayLapthe.getDayOfMonth();
+        month = ngayLapthe.getMonthValue();
+        year = ngayLapthe.getYear() - 1990;
+        Date createdday = new Date(year, month, day);
+        String email = txtEmail.getText();
+        String address = txtAddress.getText();
+        String phone = txtPhone.getText();
+
+        DocGia r = new DocGia(id, name, DocGia.Gender.valueOf(gender), birthday, DocGia.Object.valueOf(object),
+                createdday, phone, address, bophan, email);
+
+        if (new DocGiaServices().AddReader(r)) {
             new General().MessageBox("Thông Báo", "Thêm Thành Công", Alert.AlertType.INFORMATION).showAndWait();
-            String id = txtID.getText();
-            String name = txtName.getText();
-            String gender = comGender.getValue().toString();
-            LocalDate ngaysinh = datengaySinh.getValue();
-            int day = ngaysinh.getDayOfMonth();
-            int month = ngaysinh.getMonthValue();
-            int year = ngaysinh.getYear() - 1990;
-            Date birthday = new Date(year, month, day);
-            String object = comObject.getValue().toString();
-            String bophan = txtBoPhan.getText();
-            LocalDate ngayLapthe = dateNgayLapThe.getValue();
-            day = ngayLapthe.getDayOfMonth();
-            month = ngayLapthe.getMonthValue();
-            year = ngayLapthe.getYear() - 1990;
-            Date createdday = new Date(year, month, day);
-            String email = txtEmail.getText();
-            String address = txtAddress.getText();
-            String phone = txtPhone.getText();
-            
-            DocGia r = new DocGia(id, name, DocGia.Gender.valueOf(gender), birthday, DocGia.Object.valueOf(object),
-            createdday, phone, address, bophan, email);
-            
-            if (new DocGiaServices().AddReader(r))
-            {
-                new General().MessageBox("Thông Báo", "Thêm Thành Công", Alert.AlertType.INFORMATION).showAndWait();
-            }
-            else
-            {
-                new General().MessageBox("Thông Báo", "Thêm Thất Bại", Alert.AlertType.ERROR).showAndWait();
-            }
+        } else {
+            new General().MessageBox("Thông Báo", "Thêm Thất Bại", Alert.AlertType.ERROR).showAndWait();
         }
     }
-    
-    
+
+    private void EditReader() throws SQLException {
+        String id = txtID.getText();
+        String name = txtName.getText();
+        Gender gender = Gender.valueOf(comGender.getValue());
+        LocalDate ngaysinh = datengaySinh.getValue();
+        int day = ngaysinh.getDayOfMonth();
+        int month = ngaysinh.getMonthValue();
+        int year = ngaysinh.getYear() - 1990;
+        Date birthday = new Date(year, month, day);
+        DocGia.Object object = Object.valueOf(comObject.getValue());
+        String bophan = txtBoPhan.getText();
+        LocalDate ngayLapthe = dateNgayLapThe.getValue();
+        day = ngayLapthe.getDayOfMonth();
+        month = ngayLapthe.getMonthValue();
+        year = ngayLapthe.getYear() - 1990;
+        Date createdday = new Date(year, month, day);
+        String email = txtEmail.getText();
+        String address = txtAddress.getText();
+        String phone = txtPhone.getText();
+
+        DocGia r = new DocGia(id, name, gender, birthday, object,
+                createdday, phone, address, bophan, email);
+
+        if (new DocGiaServices().EditReader(r)) {
+            new General().MessageBox("Thông Báo", "Sửa Thành Công", Alert.AlertType.INFORMATION).showAndWait();
+        } else {
+            new General().MessageBox("Thông Báo", "Sửa Thất Bại", Alert.AlertType.ERROR).showAndWait();
+        }
+    }
+
+    private void DeleteReader() throws SQLException {
+        String id = txtID.getText();
+        if (new DocGiaServices().DeleteReader(id)) {
+            new General().MessageBox("Thông Báo", "Xoá Thành Công", Alert.AlertType.INFORMATION).showAndWait();
+        } else {
+            new General().MessageBox("Thông Báo", "Xoá Thất Bại", Alert.AlertType.ERROR).showAndWait();
+        }
+    }
+
+    @FXML
+    public void SaveClick(ActionEvent event) throws SQLException {
+        if (tgAdd.isSelected()) {
+            AddReader();
+        } else if (tgEdit.isSelected()) {
+            EditReader();
+        } else if (tgDelete.isSelected()) {
+            DeleteReader();
+        } 
+        else
+            new General().MessageBox("Thông Báo", "Bạn chưa chọn bất kỳ hành động nào", AlertType.WARNING).showAndWait();
+        LoadDataView(tbReader);
+    }
+
 }
