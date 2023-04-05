@@ -4,8 +4,10 @@
  */
 package com.anhquoc0304.library;
 
+import Utils.General;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -14,6 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 /**
@@ -51,7 +55,7 @@ public class HomeController implements Initializable {
 
     @FXML
     public void RentBookClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Book.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MuonSach.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -59,19 +63,19 @@ public class HomeController implements Initializable {
         stage.show();
     }
 
-//    @FXML
-//    public void BookClick(ActionEvent event) throws IOException {
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("Book.fxml"));
-//        Parent root = loader.load();
-//        Scene scene = new Scene(root);
-//        Stage stage = new Stage();
-//        stage.setScene(scene);
-//        stage.show();
-//    }
-
+    @FXML
+    public void ReturnBookClick(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TraSach.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+    }
+    
     @FXML
     public void StatClick(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Book.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Stat.fxml"));
         Parent root = loader.load();
         Scene scene = new Scene(root);
         Stage stage = new Stage();
@@ -81,7 +85,10 @@ public class HomeController implements Initializable {
 
     @FXML
     public void ExitClick(ActionEvent event) throws IOException {
-        Platform.exit();
+        Alert alert = new General().MessageBox("Cảnh Báo", "Bạn Muốn Thoát?", Alert.AlertType.CONFIRMATION);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK)
+            Platform.exit();
     }
 
     private Parent LoadFXML(String string) {
