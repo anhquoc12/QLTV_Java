@@ -11,7 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import pojo.Stat;
+import pojo.StatBook;
+import pojo.StatDocGia;
 
 /**
  *
@@ -19,8 +20,8 @@ import pojo.Stat;
  */
 public class StatServices {
 
-    public List<Stat> StatList(int quy, int year) throws SQLException {
-        List<Stat> stats = new ArrayList<>();
+    public List<StatBook> StatByBook(int quarter, int year) throws SQLException {
+        List<StatBook> stats = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT s.maSach, s.tenSach, s.theLoai, COUNT(ctpm.maSach) AS soLuongMuon \n"
                     + "FROM Sach s\n"
@@ -30,12 +31,12 @@ public class StatServices {
                     + "GROUP BY s.maSach\n"
                     + "ORDER BY soLuongMuon ";
             PreparedStatement stm = conn.prepareCall(sql);
-            stm.setInt(1, quy);
+            stm.setInt(1, quarter);
             stm.setInt(2, year);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                Stat s = new Stat(rs.getString("maSach"), 
-                        rs.getString("tenSach"), 
+                StatBook s = new StatBook(rs.getString("maSach"),
+                        rs.getString("tenSach"),
                         rs.getInt("soLuongMuon"));
                 stats.add(s);
             }
@@ -43,7 +44,26 @@ public class StatServices {
         return stats;
     }
 
-    public static void main(String[] args) throws SQLException {
-        System.out.print(new StatServices().StatList(2, 1933));
+    public List<StatDocGia> StatByReader(int quarter, int year) throws SQLException {
+        List<StatDocGia> stats = new ArrayList<>();
+        try (Connection conn = JdbcUtils.getConn()) {
+            String sql = "SELECT d.maDocGia, d.tenDocGia, COUNT(pm.maDocGia) AS soLanMuon\n"
+                    + "FROM docgia d\n"
+                    + "INNER JOIN PhieuMuon pm ON d.maDocGia = pm.maDocGia AND pm.trangThai IN ('CHUA_TRA', 'DA_TRA')\n"
+                    + "WHERE QUARTER(pm.ngayMuon) = ? AND YEAR(pm.ngayMuon) = ?\n"
+                    + "GROUP BY d.maDocGia";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setInt(1, quarter);
+            stm.setInt(2, year);
+            ResultSet rs = stm.executeQuery();
+            while (rs.next())
+            {
+                StatDocGia s = new StatDocGia(rs.getString("maDocGia"), 
+                        rs.getString("tenDocGia"), 
+                        rs.getInt("soLanMuon"));
+                stats.add(s);
+            }
+            return stats;
+        }
     }
 }

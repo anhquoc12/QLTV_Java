@@ -8,11 +8,11 @@ package pojo;
  *
  * @author dell
  */
-public class Stat {
+public class StatBook {
     private String maSach, tenSach;
     private int soLuongMuon;
     
-    public Stat(String maSach, String tenSach, int soLuongMuon)
+    public StatBook(String maSach, String tenSach, int soLuongMuon)
     {
         this.maSach = maSach;
         this.tenSach = tenSach;

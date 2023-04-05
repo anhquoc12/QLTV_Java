@@ -21,12 +21,12 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btnReader" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#ReaderClick" prefHeight="90.0" prefWidth="147.0" text="Độc Giả" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-            <Button fx:id="btnRent" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#RentBookClick" prefHeight="90.0" prefWidth="147.0" text="Mượn Sách" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="btnOrder" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="90.0" prefWidth="147.0" text="Đặt Sách" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-            <Button fx:id="btnStat" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefHeight="89.0" prefWidth="167.0" text="Thống kê - Báo Cáo" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
-            <Button fx:id="btnBook" alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="480.0" layoutY="100.0" mnemonicParsing="false" onAction="#BookClick" prefHeight="90.0" prefWidth="147.0" text="Sách" GridPane.halignment="CENTER" />
-            <Button fx:id="btnExit" layoutX="480.0" layoutY="100.0" mnemonicParsing="false" onAction="#ExitClick" prefHeight="90.0" prefWidth="147.0" text="Thoát" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#ReaderClick" prefHeight="90.0" prefWidth="147.0" text="Độc Giả" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#RentBookClick" prefHeight="90.0" prefWidth="147.0" text="Mượn Sách" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#ReturnBookClick" prefHeight="90.0" prefWidth="147.0" text="Trả Sách" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+            <Button layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#StatClick" prefHeight="89.0" prefWidth="167.0" text="Thống kê - Báo Cáo" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+            <Button alignment="CENTER" contentDisplay="TEXT_ONLY" layoutX="480.0" layoutY="100.0" mnemonicParsing="false" onAction="#BookClick" prefHeight="90.0" prefWidth="147.0" text="Sách" GridPane.halignment="CENTER" />
+            <Button layoutX="480.0" layoutY="100.0" mnemonicParsing="false" onAction="#ExitClick" prefHeight="90.0" prefWidth="147.0" text="Thoát" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>
