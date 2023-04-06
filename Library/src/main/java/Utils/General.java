@@ -48,11 +48,7 @@ public class General {
 
     public int CheckTime(Date d) {
         Date n = new General().ConvertLocalDateToDate(LocalDate.now());
-        int seconds = (int) (d.getTime() / 1000 - n.getTime() / 1000);
+        int seconds = (int) (n.getTime() / 1000 - d.getTime() / 1000);
         return seconds / (24 * 60 * 60);
-    }
-
-    public static void main(String[] args) throws SQLException {
-        
     }
 }
