@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import pojo.DocGia;
 import pojo.PhieuMuon;
+import Utils.General;
+
 
 /**
  *
@@ -16,11 +18,12 @@ import pojo.PhieuMuon;
  */
 public class Test {
     public static void main(String[] args) throws SQLException {
+        General gn = new General();
         PhieuMuonServices pmsv = new PhieuMuonServices();
         List<PhieuMuon> pms = new ArrayList<>();
         pms = pmsv.getListPhieuByID("PM00000025");
         for(PhieuMuon pm : pms){
-            System.out.println(pm.getMaPhieuMuon());
+            System.out.println(gn.CheckTime(pm.getNgayMuon()));
         }
         
     }
@@ -30,7 +33,11 @@ public class Test {
 //        pmsv.chuyenTrangThaiSachTrongCTPM(pm);
 }
 
-
+//PhieuMuonServices pmsv = new PhieuMuonServices();
+//        PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
+//        pmsv.chuyenTrangThaiSachTrongCTPM(pm);
+//        pmsv.deleteCTPD(pm);
+//        pmsv.deletePhieu(pm);
 
 
 //    List<PhieuMuon> pms = new ArrayList<>();
