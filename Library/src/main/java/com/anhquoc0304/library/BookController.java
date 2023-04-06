@@ -225,7 +225,7 @@ public class BookController implements Initializable {
         StateOfBook trangThai = Sach.StateOfBook.KHA_DUNG;
         int day = datenhap.getValue().getDayOfMonth();
         int month = datenhap.getValue().getMonthValue() - 1;
-        int year = datenhap.getValue().getYear() - 1990;
+        int year = datenhap.getValue().getYear() - 1900;
         Date ngayNhap = new Date(year, month, day);
         String mota = txtDescription.getText();
         Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);

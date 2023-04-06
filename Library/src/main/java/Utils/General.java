@@ -4,16 +4,11 @@
  */
 package Utils;
 
-import Services.SachServices;
+
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.sql.Date;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 
@@ -24,22 +19,10 @@ import javafx.scene.control.DatePicker;
 public class General {
 
     public Date ConvertLocalDateToDate(LocalDate localDate) {
-
-// Tạo một đối tượng ZoneId với múi giờ tương ứng
-        ZoneId zoneId = ZoneId.systemDefault();
-
-// Chuyển đổi LocalDate thành LocalDateTime
-        LocalDateTime localDateTime = localDate.atStartOfDay();
-
-// Chuyển đổi LocalDateTime sang ZonedDateTime với ZoneId tương ứng
-        ZonedDateTime zonedDateTime = localDateTime.atZone(zoneId);
-
-// Chuyển đổi ZonedDateTime sang Instant
-        Instant instant = zonedDateTime.toInstant();
-
-// Chuyển đổi Instant sang java.util.Date
-        return Date.from(instant);
-
+        int day = localDate.getDayOfMonth();
+        int month = localDate.getMonthValue() - 1;
+        int year = localDate.getYear() - 1900;
+        return new Date(year, month, day);
     }
 
     public LocalDate ConvertDateToLocalDate(Date date) {
@@ -56,21 +39,6 @@ public class General {
         alert.setContentText(content);
         return alert;
     }
-
-    public Date ConvertFromDatePicker(DatePicker dp) {
-        LocalDate localDate = dp.getValue();
-
-// Chuyển đổi LocalDate thành Date
-        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-
-// Định dạng lại đối tượng Date thành chuỗi dạng yyyy-MM-dd
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = dateFormat.format(date);
-
-        return date;
-
-    }
-
     public int Quarter(DatePicker dp) {
         LocalDate selectedDate = dp.getValue();
         int selectedMonth = selectedDate.getMonthValue();
@@ -78,6 +46,13 @@ public class General {
 
     }
 
+    public int CheckTime(Date d) {
+        Date n = new General().ConvertLocalDateToDate(LocalDate.now());
+        int seconds = (int) (d.getTime() / 1000 - n.getTime() / 1000);
+        return seconds / (24 * 60 * 60);
+    }
+
     public static void main(String[] args) throws SQLException {
+        
     }
 }
