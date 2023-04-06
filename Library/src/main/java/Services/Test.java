@@ -18,11 +18,10 @@ public class Test {
     public static void main(String[] args) throws SQLException {
         PhieuMuonServices pmsv = new PhieuMuonServices();
         List<PhieuMuon> pms = new ArrayList<>();
-        pms = pmsv.getPhieuDatByIDDocGia("DG0001");
-        if(pms.size() >= 1)
-            System.out.println("Ko dc muon");
-        else
-            System.out.println("Dc muon");
+        pms = pmsv.getListPhieuByID("PM00000025");
+        for(PhieuMuon pm : pms){
+            System.out.println(pm.getMaPhieuMuon());
+        }
         
     }
 //    PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
