@@ -140,15 +140,15 @@ public class PhieuMuonServices {
         List<PhieuMuon> pms = new ArrayList<>();
         try ( Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM phieumuon";
-            if (kw != null && !kw.isEmpty()) {
+//            if (kw != null && !kw.isEmpty()) {
                 sql += " WHERE maPhieuMuon like concat('%', ?, '%') and trangThai ='CHUA_TRA' or maPhieuMuon like concat('%', ?, '%') and trangThai ='DANG_DAT'";
-            }
+//            }
 
             PreparedStatement stm = conn.prepareCall(sql);
-            if (kw != null && !kw.isEmpty()) {
+//            if (kw != null && !kw.isEmpty()) {
                 stm.setString(1, kw);
                 stm.setString(2, kw);
-            }
+//            }
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {
@@ -167,15 +167,15 @@ public class PhieuMuonServices {
         List<PhieuMuon> pms = new ArrayList<>();
         try ( Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM phieumuon";
-            if (kw != null && !kw.isEmpty()) {
+//            if (kw != null && !kw.isEmpty()) {
                 sql += " WHERE maDocGia like concat('%', ?, '%')and trangThai ='CHUA_TRA' or maDocGia like concat('%', ?, '%') and trangThai ='DANG_DAT'";
-            }
+//            }
 
             PreparedStatement stm = conn.prepareCall(sql);
-            if (kw != null && !kw.isEmpty()) {
+//            if (kw != null && !kw.isEmpty()) {
                 stm.setString(1, kw);
                 stm.setString(2, kw);
-            }
+//            }
             ResultSet rs = stm.executeQuery();
 
             while (rs.next()) {

@@ -134,9 +134,9 @@ public class TraSachController implements Initializable {
             if (trangThai.equals("CHUA_TRA")) {
                 lblTrangThai.setText("Chưa Trả Sách");
             } 
-            else if(trangThai.equals("DA_TRA")){
-                lblTrangThai.setText("Đã trả sách");
-            }
+//            else if(trangThai.equals("DA_TRA")){
+//                lblTrangThai.setText("Đã trả sách");
+//            }
             else {
                 lblTrangThai.setText("Đang Đặt");
             }
@@ -157,14 +157,14 @@ public class TraSachController implements Initializable {
         } else if (pm.getTrangThai().name().equals("DANG_DAT")) {
             gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu đặt sách!!!", Alert.AlertType.ERROR).showAndWait();
         } 
-        else if(pm.getTrangThai().name().equals("DA_TRA")){
-            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
-            if (r >= 0) {
-                tbPhieuMuon.getSelectionModel().clearSelection();
-            }
-            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
-            clearInfo();
-        }
+//        else if(pm.getTrangThai().name().equals("DA_TRA")){
+//            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
+//            if (r >= 0) {
+//                tbPhieuMuon.getSelectionModel().clearSelection();
+//            }
+//            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
+//            clearInfo();
+//        }
         else {
             PhieuMuonServices pmsv = new PhieuMuonServices();
             pmsv.setTrangThaiPM(pm);
@@ -198,14 +198,14 @@ public class TraSachController implements Initializable {
         } else if (pm.getTrangThai().name().equals("CHUA_TRA")) {
             gn.MessageBox("Không Hợp Lệ", "Không thể xác nhận phiếu Mượn sách!!!", Alert.AlertType.ERROR).showAndWait();
         }
-        else if(pm.getTrangThai().name().equals("DA_TRA")){
-            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
-            if (r >= 0) {
-                tbPhieuMuon.getSelectionModel().clearSelection();
-            }
-            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
-            clearInfo();
-        }
+//        else if(pm.getTrangThai().name().equals("DA_TRA")){
+//            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
+//            if (r >= 0) {
+//                tbPhieuMuon.getSelectionModel().clearSelection();
+//            }
+//            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
+//            clearInfo();
+//        }
         else {
             PhieuMuonServices pmsv = new PhieuMuonServices();
             pmsv.setTrangThaiPD(pm);
