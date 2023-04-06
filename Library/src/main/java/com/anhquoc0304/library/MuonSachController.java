@@ -235,9 +235,19 @@ public class MuonSachController implements Initializable {
         PhieuMuonServices servicepm = new PhieuMuonServices();
         phieumuons = servicepm.getPhieuMuonByIDDocGia(lblMaDocGia.getText().strip());
         phieudats = servicepm.getPhieuDatByIDDocGia(lblMaDocGia.getText().strip());
-        if (lblMaDocGia.getText().equals("") || tbSachMuon.getItems().size() < 1 || phieumuons.size() >= 1 || phieudats.size() >= 1 || tbSachMuon.getItems().size() > 5) {
-            messageBox.MessageBox("WARNING", "Phiếu mượn không hợp lệ", Alert.AlertType.ERROR).showAndWait();
-        } else {
+        if (lblMaDocGia.getText().equals("")) {
+            messageBox.MessageBox("WARNING", "Hãy chọn độc giả cần mượn sách!!!", Alert.AlertType.ERROR).showAndWait();
+        } 
+        else if(tbSachMuon.getItems().size() < 1 || tbSachMuon.getItems().size() > 5){
+            messageBox.MessageBox("WARNING", "Số lượng sách mượn Không hợp lệ!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if(phieumuons.size() >= 1){
+            messageBox.MessageBox("WARNING", "Độc giả chưa trả hết số sách đã mượn!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if(phieudats.size() >= 1){
+           messageBox.MessageBox("WARNING", "Độc giả đang đặt trước sách!!!", Alert.AlertType.ERROR).showAndWait(); 
+        }
+        else {
             LocalDate date = LocalDate.now();
             int d, m, y;
             d = date.getDayOfMonth();
@@ -264,6 +274,9 @@ public class MuonSachController implements Initializable {
                 }
                 gn.MessageBox("THÔNG BÁO", "Lập phiếu mượn thành công!!!", Alert.AlertType.INFORMATION).showAndWait();
                 tbSachMuon.getItems().clear();
+                tbSachMuon.getItems().clear();
+                tbDocGia.getSelectionModel().clearSelection();
+                clearInfoDocGia();
             } catch (SQLException ex) {
                 gn.MessageBox("ERROR", ex.getMessage(), Alert.AlertType.INFORMATION).showAndWait();
             }
@@ -279,9 +292,19 @@ public class MuonSachController implements Initializable {
         PhieuMuonServices servicepm = new PhieuMuonServices();
         phieumuons = servicepm.getPhieuMuonByIDDocGia(lblMaDocGia.getText().strip());
         phieudats = servicepm.getPhieuDatByIDDocGia(lblMaDocGia.getText().strip());
-        if (lblMaDocGia.getText().equals("") || tbSachMuon.getItems().size() < 1 || phieumuons.size() >= 1 || phieudats.size() >= 1 || tbSachMuon.getItems().size() > 5) {
-            messageBox.MessageBox("WARNING", "Phiếu đặt không hợp lệ", Alert.AlertType.ERROR).showAndWait();
-        } else {
+        if (lblMaDocGia.getText().equals("")) {
+            messageBox.MessageBox("WARNING", "Hãy chọn độc giả cần đặt sách", Alert.AlertType.ERROR).showAndWait();
+        } 
+        else if(tbSachMuon.getItems().size() < 1 || tbSachMuon.getItems().size() > 5){
+            messageBox.MessageBox("WARNING", "Số lượng sách đặt Không hợp lệ!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if(phieumuons.size() >= 1){
+            messageBox.MessageBox("WARNING", "Độc giả chưa trả hết số sách đã mượn!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if(phieudats.size() >= 1){
+            messageBox.MessageBox("WARNING", "Độc giả đã có phiếu đặt!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else {
             LocalDate date = LocalDate.now();
             int d, m, y;
             d = date.getDayOfMonth();
@@ -308,6 +331,8 @@ public class MuonSachController implements Initializable {
                 }
                 gn.MessageBox("THÔNG BÁO", "Lập phiếu đặt thành công!!!", Alert.AlertType.INFORMATION).showAndWait();
                 tbSachMuon.getItems().clear();
+                tbDocGia.getSelectionModel().clearSelection();
+                clearInfoDocGia();
             } catch (SQLException ex) {
                 gn.MessageBox("ERROR", ex.getMessage(), Alert.AlertType.INFORMATION).showAndWait();
             }
@@ -316,6 +341,12 @@ public class MuonSachController implements Initializable {
 
     public void exitHandler(ActionEvent evevnt) {
         Platform.exit();
+    }
+    private void clearInfoDocGia(){
+        this.lblMaDocGia.setText("");
+        this.lblTenDocGia.setText("");
+        this.lblDoiTuong.setText("");
+        this.lblSoDienThoai.setText("");
     }
 
 //    public static void main(String[] args) {
