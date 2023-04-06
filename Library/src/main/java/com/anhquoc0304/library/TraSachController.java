@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,17 +77,18 @@ public class TraSachController implements Initializable {
         cbPhieuMuon.getItems().addAll(itemsOfPM);
         cbPhieuMuon.setValue("Mã Phiếu");
         loadTablePhieuMuon();
+        try {
+            loadPhieuMuon();
+        } catch (SQLException ex) {
+            Logger.getLogger(TraSachController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.txtTimKiem.textProperty().addListener((evt) -> {
             try {
-                loadPhieuMuon();
+                this.fillterDataTablePM(tbPhieuMuon, this.txtTimKiem.getText(), cbPhieuMuon.getValue());
             } catch (SQLException ex) {
-                Logger.getLogger(TraSachController.class.getName()).log(Level.SEVERE, null, ex);}
-            this.txtTimKiem.textProperty().addListener((evt) -> {
-                try {
-                    this.fillterDataTablePM(tbPhieuMuon, this.txtTimKiem.getText(), cbPhieuMuon.getValue());
-                } catch (SQLException ex) {
-                    Logger.getLogger(TraSachController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            });
+                Logger.getLogger(TraSachController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
     }
 
     private void loadTablePhieuMuon() {
@@ -122,10 +124,12 @@ public class TraSachController implements Initializable {
     }
 
     public void rowClick(MouseEvent event) throws SQLException {
+        General gn = new General();
         TableView<PhieuMuon> table = (TableView<PhieuMuon>) event.getSource();
         PhieuMuon pm = table.getSelectionModel().getSelectedItem();
         DocGiaServices sv = new DocGiaServices();
         PhieuMuonServices svpm = new PhieuMuonServices();
+        int soNgayMuon = gn.CheckTime(pm.getNgayMuon());
         if (pm != null) {
             String trangThai = pm.getTrangThai().name();
             lblMaPhieuMuon.setText(pm.getMaPhieuMuon());
@@ -133,12 +137,35 @@ public class TraSachController implements Initializable {
             lblNgayMuon.setText(pm.getNgayMuon().toString());
             if (trangThai.equals("CHUA_TRA")) {
                 lblTrangThai.setText("Chưa Trả Sách");
-            } 
-//            else if(trangThai.equals("DA_TRA")){
-//                lblTrangThai.setText("Đã trả sách");
-//            }
+                if (soNgayMuon > 30) {
+                    int soNgayTre = soNgayMuon - 30;
+                    double tienPhat = soNgayTre * 5000;
+                    lblContentM.setText("Số ngày trễ:");
+                    lblSoNgayTre.setText(String.valueOf(soNgayTre) + " " + "ngày");
+                    lblContenP.setText("Tiền phạt:");
+                    lblTienPhat.setText(String.valueOf(tienPhat) + "VND");
+                } else {
+                    lblContentM.setText("");
+                    lblContenP.setText("");
+                    lblSoNgayTre.setText("");
+                    lblTienPhat.setText("");
+                }
+            } //            else if(trangThai.equals("DA_TRA")){
+            //                lblTrangThai.setText("Đã trả sách");
+            //            }
             else {
                 lblTrangThai.setText("Đang Đặt");
+                if (soNgayMuon >= 2) {
+                    lblContentM.setText("Số ngày trễ:");
+                    lblSoNgayTre.setText(String.valueOf(soNgayMuon));
+                    lblContenP.setText("");
+                    lblTienPhat.setText("");
+                } else {
+                    lblContentM.setText("");
+                    lblSoNgayTre.setText("");
+                    lblContenP.setText("");
+                    lblTienPhat.setText("");
+                }
             }
             DocGia dg = sv.listDocGiaByID(lblMaDocGia.getText()).get(0);
             lblTenDocGia.setText(dg.getTenDocGia());
@@ -150,21 +177,20 @@ public class TraSachController implements Initializable {
     }
 
     public void traSachHandler(ActionEvent event) throws SQLException {
-        PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
         General gn = new General();
+        PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
         if (lblMaPhieuMuon.getText().strip().equals("")) {
             gn.MessageBox("Warrning", "Hãy chọn phiếu mượn cần trả!!!", Alert.AlertType.ERROR).showAndWait();
         } else if (pm.getTrangThai().name().equals("DANG_DAT")) {
             gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu đặt sách!!!", Alert.AlertType.ERROR).showAndWait();
-        } 
-//        else if(pm.getTrangThai().name().equals("DA_TRA")){
-//            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
-//            if (r >= 0) {
-//                tbPhieuMuon.getSelectionModel().clearSelection();
-//            }
-//            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
-//            clearInfo();
-//        }
+        } //        else if(pm.getTrangThai().name().equals("DA_TRA")){
+        //            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
+        //            if (r >= 0) {
+        //                tbPhieuMuon.getSelectionModel().clearSelection();
+        //            }
+        //            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
+        //            clearInfo();
+        //        }
         else {
             PhieuMuonServices pmsv = new PhieuMuonServices();
             pmsv.setTrangThaiPM(pm);
@@ -193,20 +219,22 @@ public class TraSachController implements Initializable {
     public void xacNhanDatHandler(ActionEvent event) throws SQLException {
         PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
         General gn = new General();
+        int soNgayTre = gn.CheckTime(pm.getNgayMuon());
         if (lblMaPhieuMuon.getText().strip().equals("")) {
             gn.MessageBox("Warrning", "Hãy chọn phiếu mượn cần trả!!!", Alert.AlertType.ERROR).showAndWait();
         } else if (pm.getTrangThai().name().equals("CHUA_TRA")) {
             gn.MessageBox("Không Hợp Lệ", "Không thể xác nhận phiếu Mượn sách!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-//        else if(pm.getTrangThai().name().equals("DA_TRA")){
-//            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
-//            if (r >= 0) {
-//                tbPhieuMuon.getSelectionModel().clearSelection();
-//            }
-//            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
-//            clearInfo();
-//        }
-        else {
+        } //        else if(pm.getTrangThai().name().equals("DA_TRA")){
+        //            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
+        //            if (r >= 0) {
+        //                tbPhieuMuon.getSelectionModel().clearSelection();
+        //            }
+        //            gn.MessageBox("Không Hợp Lệ", "Không thể trả phiếu này!!!", Alert.AlertType.ERROR).showAndWait();
+        //            clearInfo();
+        //        }
+        else if (soNgayTre >= 2) {
+            gn.MessageBox("Không thể xác nhận phiếu đặt", "Phiếu đặt không khả dụng do trễ 2 ngày!!!", Alert.AlertType.ERROR).showAndWait();
+        } else {
             PhieuMuonServices pmsv = new PhieuMuonServices();
             pmsv.setTrangThaiPD(pm);
             pmsv.chuyenTrangThaiSachTrongCTPD(pm);
@@ -218,5 +246,36 @@ public class TraSachController implements Initializable {
             gn.MessageBox("Thành Công", "Xác nhận đặt sách thành công", Alert.AlertType.INFORMATION).showAndWait();
             clearInfo();
         }
+    }
+
+    public void huyDatHandler(ActionEvent event) throws SQLException {
+        PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
+        General gn = new General();
+        PhieuMuonServices pmsv = new PhieuMuonServices();
+        if (lblMaPhieuMuon.getText().equals("")) {
+            gn.MessageBox("Chú Ý", "Hãy chọn phiếu đặt cần Hủy!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if (pm.getTrangThai().name().equals("CHUA_TRA")) {
+            gn.MessageBox("Không Hợp Lệ", "Không thể Hủy phiếu Mượn sách!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if(gn.CheckTime(pm.getNgayMuon()) < 2){
+            gn.MessageBox("Error", "Không thể hủy phiếu đặt do chưa hết hạn đặt!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else{
+            pmsv.chuyenTrangThaiSachTrongCTPM(pm);
+            pmsv.deleteCTPD(pm);
+            pmsv.deletePhieu(pm);
+            int r = tbPhieuMuon.getSelectionModel().getSelectedIndex();
+            if (r >= 0) {
+                tbPhieuMuon.getItems().remove(r);
+                tbPhieuMuon.getSelectionModel().clearSelection();
+            }
+            gn.MessageBox("Thành Công", "Hủy phiếu đặt đặt sách thành công", Alert.AlertType.INFORMATION).showAndWait();
+            clearInfo();
+        }
+                
+    }
+    public void exitHandler(ActionEvent event){
+        Platform.exit();
     }
 }
