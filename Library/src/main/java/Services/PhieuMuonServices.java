@@ -299,4 +299,32 @@ public class PhieuMuonServices {
             }
         }
     }
+    public void deleteCTPD(PhieuMuon pm) throws SQLException{
+        List<ChiTietPhieuMuon> ctpms = new ArrayList<>();
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql1 = "select * from chitietphieumuon where maPhieuMuon like concat('%', ?, '%')";
+            PreparedStatement stm1 = conn.prepareCall(sql1);
+            stm1.setString(1, pm.getMaPhieuMuon());
+            ResultSet rs1 = stm1.executeQuery();
+            while(rs1.next()){
+                ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(rs1.getString("maCTPM"), 
+                        rs1.getString("maPhieuMuon"), rs1.getString("maSach"));
+                ctpms.add(ctpm);
+            }
+            for(ChiTietPhieuMuon ctpm : ctpms){
+                String sql2 = "delete from chitietphieumuon where maCTPM like concat('%', ?, '%')";
+                PreparedStatement stm2 = conn.prepareCall(sql2);
+                stm2.setString(1, ctpm.getMaCTPM());
+                stm2.executeUpdate();
+            }
+        }
+    }
+    public void deletePhieu(PhieuMuon pm) throws SQLException{
+        try(Connection conn = JdbcUtils.getConn()){
+           String sql = "delete from phieumuon where maPhieuMuon like concat('%', ?, '%')";
+           PreparedStatement stm = conn.prepareCall(sql);
+           stm.setString(1, pm.getMaPhieuMuon());
+           stm.executeUpdate();
+        }
+    }
 }

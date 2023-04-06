@@ -13,8 +13,8 @@
       <TableView fx:id="tbPhieuMuon" layoutX="88.0" layoutY="258.0" onMouseClicked="#rowClick" prefHeight="318.0" prefWidth="491.0" />
       <Button layoutX="111.0" layoutY="595.0" mnemonicParsing="false" onAction="#traSachHandler" text="Trả sách" />
       <Button layoutX="233.0" layoutY="595.0" mnemonicParsing="false" onAction="#xacNhanDatHandler" text="Xác nhận đặt" />
-      <Button layoutX="387.0" layoutY="595.0" mnemonicParsing="false" text="Hủy đặt" />
-      <Button layoutX="506.0" layoutY="595.0" mnemonicParsing="false" text="Thoát" />
+      <Button layoutX="387.0" layoutY="595.0" mnemonicParsing="false" onAction="#huyDatHandler" text="Hủy đặt" />
+      <Button layoutX="506.0" layoutY="595.0" mnemonicParsing="false" onAction="#exitHandler" text="Thoát" />
       <TextField fx:id="txtTimKiem" layoutX="90.0" layoutY="218.0" prefHeight="26.0" prefWidth="293.0" promptText="Nhập thông tin phiếu mượn..." />
       <ComboBox fx:id="cbPhieuMuon" layoutX="429.0" layoutY="219.0" prefWidth="150.0" />
       <Label layoutX="49.0" layoutY="76.0" text="Mã độc giả:" />
@@ -37,10 +37,10 @@
             <Font size="19.0" />
          </font>
       </Label>
-      <Label fx:id="lblContentM" layoutX="468.0" layoutY="75.0" text="Trả sách Muộn:" />
-      <Label fx:id="lblContenP" layoutX="468.0" layoutY="105.0" text="Tiền phạt:" />
-      <Label fx:id="lblSoNgayTre" layoutX="579.0" layoutY="75.0" text="Label" />
-      <Label fx:id="lblTienPhat" layoutX="565.0" layoutY="105.0" text="Label" />
+      <Label fx:id="lblContentM" layoutX="468.0" layoutY="75.0" />
+      <Label fx:id="lblContenP" layoutX="468.0" layoutY="105.0" />
+      <Label fx:id="lblSoNgayTre" layoutX="579.0" layoutY="75.0" />
+      <Label fx:id="lblTienPhat" layoutX="565.0" layoutY="105.0" />
       <Label fx:id="lblMaDocGia" layoutX="138.0" layoutY="76.0" />
    </children>
 </AnchorPane>
