@@ -25,7 +25,15 @@ public class Test {
             System.out.println("Dc muon");
         
     }
+//    PhieuMuon pm = tbPhieuMuon.getSelectionModel().getSelectedItem();
+//        PhieuMuonServices pmsv = new PhieuMuonServices();
+//        pmsv.setTrangThaiPM(pm);
+//        pmsv.chuyenTrangThaiSachTrongCTPM(pm);
 }
+
+
+
+
 //    List<PhieuMuon> pms = new ArrayList<>();
 //        PhieuMuonServices s = new PhieuMuonServices();
 //        pms = s.getPhieuMuonByIDDocGia(lblMaDocGia.getText());

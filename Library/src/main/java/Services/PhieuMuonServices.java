@@ -136,17 +136,18 @@ public class PhieuMuonServices {
         }
     }
 
-    public List<PhieuMuon> listPhieuMuon(String kw) throws SQLException {
+    public List<PhieuMuon> getListPhieuByID(String kw) throws SQLException {
         List<PhieuMuon> pms = new ArrayList<>();
         try ( Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM phieumuon";
             if (kw != null && !kw.isEmpty()) {
-                sql += " WHERE maPhieuMuon like concat('%', ?, '%') and trangThai = 'CHUA_TRA'";
+                sql += " WHERE maPhieuMuon like concat('%', ?, '%') and trangThai ='CHUA_TRA' or maPhieuMuon like concat('%', ?, '%') and trangThai ='DANG_DAT'";
             }
 
             PreparedStatement stm = conn.prepareCall(sql);
             if (kw != null && !kw.isEmpty()) {
                 stm.setString(1, kw);
+                stm.setString(2, kw);
             }
             ResultSet rs = stm.executeQuery();
 
@@ -162,17 +163,18 @@ public class PhieuMuonServices {
         return pms;
     }
 
-    public List<PhieuMuon> listPhieuDat(String kw) throws SQLException {
+    public List<PhieuMuon> getListPhieuByIDDG(String kw) throws SQLException {
         List<PhieuMuon> pms = new ArrayList<>();
         try ( Connection conn = JdbcUtils.getConn()) {
             String sql = "SELECT * FROM phieumuon";
             if (kw != null && !kw.isEmpty()) {
-                sql += " WHERE maPhieuMuon like concat('%', ?, '%') and trangThai = 'DANG_DAT'";
+                sql += " WHERE maDocGia like concat('%', ?, '%')and trangThai ='CHUA_TRA' or maDocGia like concat('%', ?, '%') and trangThai ='DANG_DAT'";
             }
 
             PreparedStatement stm = conn.prepareCall(sql);
             if (kw != null && !kw.isEmpty()) {
                 stm.setString(1, kw);
+                stm.setString(2, kw);
             }
             ResultSet rs = stm.executeQuery();
 
@@ -188,10 +190,10 @@ public class PhieuMuonServices {
         return pms;
     }
 
-    public List<PhieuMuon> listPhieuMuon() throws SQLException {
+    public List<PhieuMuon> loadListPhieuMuon() throws SQLException {
         List<PhieuMuon> pms = new ArrayList<>();
         try ( Connection conn = JdbcUtils.getConn()) {
-            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM phieumuon");
+            ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM phieumuon where trangThai = 'CHUA_TRA' or trangThai = 'DANG_DAT'");
 
             while (rs.next()) {
                 String maPhieuMuon = rs.getString("maPhieuMuon");
@@ -224,5 +226,77 @@ public class PhieuMuonServices {
             }
         }
         return ctpms;
+    }
+    public void setTrangThaiPM(PhieuMuon pm) throws SQLException{
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql = "update phieumuon set trangThai = 'DA_TRA' where maPhieuMuon like concat('%', ?, '%')";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, pm.getMaPhieuMuon());
+            stm.executeUpdate();
+        }
+    }
+    public void chuyenTrangThaiSachTrongCTPM(PhieuMuon pm) throws SQLException{
+        List<ChiTietPhieuMuon> ctpms = new ArrayList<>();
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql = "select * from chitietphieumuon where maPhieuMuon like concat('%', ?, '%')";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, pm.getMaPhieuMuon());
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(rs.getString("maCTPM"), 
+                        rs.getString("maPhieuMuon"), rs.getString("maSach"));
+                ctpms.add(ctpm);
+            }
+            List<String> listMaSach = new ArrayList<>();
+            if(ctpms.size() >=1){
+                for(ChiTietPhieuMuon ctpm : ctpms){
+                    listMaSach.add(ctpm.getMaSach());
+                }
+            }
+            if(listMaSach.size() >=1){
+                for(String maSach : listMaSach){
+                    String sql2 = "update sach set trangThai = 'KHA_DUNG' where maSach like concat('%', ?, '%')";
+                    PreparedStatement stm2 = conn.prepareCall(sql2);
+                    stm2.setString(1, maSach);
+                    stm2.executeUpdate();
+                }
+            }
+        }
+    }
+    public void setTrangThaiPD(PhieuMuon pm) throws SQLException{
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql = "update phieumuon set trangThai = 'CHUA_TRA' where maPhieuMuon like concat('%', ?, '%')";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, pm.getMaPhieuMuon());
+            stm.executeUpdate();
+        }
+    }
+    public void chuyenTrangThaiSachTrongCTPD(PhieuMuon pm) throws SQLException{
+        List<ChiTietPhieuMuon> ctpms = new ArrayList<>();
+        try(Connection conn = JdbcUtils.getConn()){
+            String sql = "select * from chitietphieumuon where maPhieuMuon like concat('%', ?, '%')";
+            PreparedStatement stm = conn.prepareCall(sql);
+            stm.setString(1, pm.getMaPhieuMuon());
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()){
+                ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(rs.getString("maCTPM"), 
+                        rs.getString("maPhieuMuon"), rs.getString("maSach"));
+                ctpms.add(ctpm);
+            }
+            List<String> listMaSach = new ArrayList<>();
+            if(ctpms.size() >=1){
+                for(ChiTietPhieuMuon ctpm : ctpms){
+                    listMaSach.add(ctpm.getMaSach());
+                }
+            }
+            if(listMaSach.size() >=1){
+                for(String maSach : listMaSach){
+                    String sql2 = "update sach set trangThai = 'DANG_DUOC_MUON' where maSach like concat('%', ?, '%')";
+                    PreparedStatement stm2 = conn.prepareCall(sql2);
+                    stm2.setString(1, maSach);
+                    stm2.executeUpdate();
+                }
+            }
+        }
     }
 }
