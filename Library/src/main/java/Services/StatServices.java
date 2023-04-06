@@ -23,7 +23,7 @@ public class StatServices {
     public List<StatBook> StatByBook(int quarter, int year) throws SQLException {
         List<StatBook> stats = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "SELECT s.maSach, s.tenSach, s.theLoai, COUNT(ctpm.maSach) AS soLuongMuon \n"
+            String sql = "SELECT s.maSach, s.tenSach, COUNT(ctpm.maSach) AS soLuongMuon \n"
                     + "FROM Sach s\n"
                     + "INNER JOIN ChiTietPhieuMuon ctpm ON s.maSach = ctpm.maSach\n"
                     + "INNER JOIN PhieuMuon pm ON ctpm.maPhieuMuon = pm.maPhieuMuon AND pm.trangThai IN ('CHUA_TRA', 'DA_TRA')\n"
