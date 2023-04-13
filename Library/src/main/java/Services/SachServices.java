@@ -4,14 +4,11 @@
  */
 package Services;
 
-import Utils.General;
 import conf.JdbcUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
@@ -22,7 +19,8 @@ import pojo.Sach;
  * @author dell
  */
 public class SachServices {
-
+    public SachServices() {}
+    
     public List<Sach> SachList() throws SQLException {
         List<Sach> books = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
@@ -248,13 +246,24 @@ public class SachServices {
 
     }
 
-    public boolean DeleteBook(String id) throws SQLException {
+    public Boolean DeleteBook(String id) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-            String sql = "DELETE FROM Sach WHERE maSach = ?";
-            PreparedStatement stm = conn.prepareStatement(sql);
-            stm.setString(1, id);
-            int r = stm.executeUpdate();
-            return r > 0;
+            try {
+                String sql = "DELETE FROM qltv_db.chitietphieumuon c WHERE "
+                        + "(SELECT trangThai from qltv_db.phieumuon p WHERE "
+                        + "c.maPhieuMuon = p.maPhieuMuon) = 'DA_TRA' "
+                        + "AND maSach = ?";
+                PreparedStatement stm = conn.prepareStatement(sql);
+                stm.setString(1, id);
+                int r = stm.executeUpdate();
+                sql = "DELETE FROM Sach WHERE maSach = ?";
+                PreparedStatement stm_next = conn.prepareStatement(sql);
+                stm_next.setString(1, id);
+                r = stm_next.executeUpdate();
+                return r > 0;
+            } catch (Exception ex) {
+                return false;
+            }
         }
     }
 

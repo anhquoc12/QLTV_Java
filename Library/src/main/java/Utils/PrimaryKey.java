@@ -14,18 +14,19 @@ public class PrimaryKey {
     }
 
     public String ID_4(String key, String lastkey) {
-
+        if (lastkey == null) {
+            return key + "0001";
+        }
         int num = Integer.parseInt(lastkey.substring(2, 6)) + 1;
         return key + "0000".substring(0, 6 - 2 - Integer.toString(num).length()) + num;
     }
 
     public String ID_8(String key, String lastkey) {
-        if (key.length() == 2) {
-            int num = Integer.parseInt(lastkey.substring(2, 10)) + 1;
-            return key + "00000000".substring(0, 10 - 2 - Integer.toString(num).length()) + num;
+        if (lastkey == null) {
+            return key + "00000001";
         }
-        int num = Integer.parseInt(lastkey.substring(4, 12)) + 1;
-        return key + "00000000".substring(0, 12 - 4 - Integer.toString(num).length()) + num;
+        int num = Integer.parseInt(lastkey.substring(2, 10)) + 1;
+        return key + "00000000".substring(0, 10 - 2 - Integer.toString(num).length()) + num;
     }
 
     public static void main(String[] args) {

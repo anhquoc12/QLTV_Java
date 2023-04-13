@@ -11,8 +11,14 @@ package pojo;
 public class StatDocGia {
     private String maDocGia, tenDocGia;
     private int soLanMuon;
-    
     public StatDocGia(String maDocGia, String tenDocGia, int soLanMuon)
+    {
+        this.maDocGia = maDocGia;
+        this.tenDocGia = tenDocGia;
+        this.soLanMuon = soLanMuon;
+    }
+    
+    public StatDocGia(String tenDocGia, int soLanMuonr)
     {
         this.maDocGia = maDocGia;
         this.tenDocGia = tenDocGia;
