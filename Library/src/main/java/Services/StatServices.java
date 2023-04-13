@@ -56,10 +56,9 @@ public class StatServices {
             stm.setInt(1, quarter);
             stm.setInt(2, year);
             ResultSet rs = stm.executeQuery();
-            while (rs.next())
-            {
-                StatDocGia s = new StatDocGia(rs.getString("maDocGia"), 
-                        rs.getString("tenDocGia"), 
+            while (rs.next()) {
+                StatDocGia s = new StatDocGia(rs.getString("maDocGia"),
+                        rs.getString("tenDocGia"),
                         rs.getInt("soLanMuon"));
                 stats.add(s);
             }
