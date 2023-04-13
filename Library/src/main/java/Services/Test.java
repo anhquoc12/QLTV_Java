@@ -18,12 +18,12 @@ import Utils.General;
  */
 public class Test {
     public static void main(String[] args) throws SQLException {
-        General gn = new General();
+//        General gn = new General();
         PhieuMuonServices pmsv = new PhieuMuonServices();
         List<PhieuMuon> pms = new ArrayList<>();
-        pms = pmsv.getListPhieuByID("PM00000025");
+        pms = pmsv.getPhieuMuonByIDDocGia("DG0002");
         for(PhieuMuon pm : pms){
-            System.out.println(gn.CheckTime(pm.getNgayMuon()));
+            System.out.println(pm.getMaDocGia());
         }
         
     }

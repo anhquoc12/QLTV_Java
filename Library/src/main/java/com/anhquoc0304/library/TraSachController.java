@@ -245,6 +245,7 @@ public class TraSachController implements Initializable {
             }
             gn.MessageBox("Thành Công", "Xác nhận đặt sách thành công", Alert.AlertType.INFORMATION).showAndWait();
             clearInfo();
+            loadPhieuMuon();
         }
     }
 

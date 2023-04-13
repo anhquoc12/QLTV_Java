@@ -9,7 +9,7 @@ module com.anhquoc0304.library {
     opens com.anhquoc0304.library to javafx.fxml;
     exports com.anhquoc0304.library;
     exports pojo;
-    exports conf;
     exports Services;
     exports Utils;
+    exports conf;
 }
