@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import pojo.StatBook;
 import pojo.StatDocGia;
 
@@ -26,7 +26,7 @@ public class UnitTest_StatServices {
     public static Connection conn;
     public static StatServices service;
     
-    @BeforeClass
+    @BeforeAll
     public static void ConnectDB()
     {
         try {
@@ -38,7 +38,7 @@ public class UnitTest_StatServices {
         }
     }
     
-    @AfterClass
+    @AfterAll
     public static void CloseDB()
     {
         try {
@@ -55,9 +55,9 @@ public class UnitTest_StatServices {
         int quarter = 2, year = 2022;
         try {
             List<StatDocGia> readers = service.StatByReader(quarter, year);
-            Assert.assertTrue(!readers.isEmpty());
+            Assertions.assertTrue(!readers.isEmpty());
             for (StatDocGia r : readers)
-                Assert.assertTrue(r.getSoLanMuon() > 0);
+                Assertions.assertTrue(r.getSoLanMuon() > 0);
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_StatServices.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,9 +69,9 @@ public class UnitTest_StatServices {
         int quarter = 2, year = 2022;
         try {
             List<StatBook> books = service.StatByBook(quarter, year);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             for (StatBook b : books)
-                Assert.assertTrue(b.getSoLuongMuon() > 0);
+                Assertions.assertTrue(b.getSoLuongMuon() > 0);
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_StatServices.class.getName()).log(Level.SEVERE, null, ex);
         }
