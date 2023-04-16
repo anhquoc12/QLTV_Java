@@ -231,6 +231,8 @@ public class MuonSachController implements Initializable {
         List<PhieuMuon> phieudats = new ArrayList<>();
 
         General messageBox = new General();
+        DocGia dg = tbDocGia.getSelectionModel().getSelectedItem();
+        int hanThe = messageBox.CheckTime(dg.getNgayLapThe());
 
         PhieuMuonServices servicepm = new PhieuMuonServices();
         phieumuons = servicepm.getPhieuMuonByIDDocGia(lblMaDocGia.getText().strip());
@@ -246,6 +248,9 @@ public class MuonSachController implements Initializable {
         }
         else if(phieudats.size() >= 1){
            messageBox.MessageBox("WARNING", "Độc giả đang đặt trước sách!!!", Alert.AlertType.ERROR).showAndWait(); 
+        }
+        else if(hanThe >= 1460){
+           messageBox.MessageBox("WARNING", "Thẻ của độc giả đã hết hạn!!!", Alert.AlertType.ERROR).showAndWait();
         }
         else {
             LocalDate date = LocalDate.now();
@@ -286,8 +291,10 @@ public class MuonSachController implements Initializable {
     public void lapPhieuDatHandler(ActionEvent event) throws SQLException {
         List<PhieuMuon> phieumuons = new ArrayList<>();
         List<PhieuMuon> phieudats = new ArrayList<>();
+        DocGia dg = tbDocGia.getSelectionModel().getSelectedItem();
 
         General messageBox = new General();
+        int hanThe = messageBox.CheckTime(dg.getNgayLapThe());
 
         PhieuMuonServices servicepm = new PhieuMuonServices();
         phieumuons = servicepm.getPhieuMuonByIDDocGia(lblMaDocGia.getText().strip());
@@ -303,6 +310,9 @@ public class MuonSachController implements Initializable {
         }
         else if(phieudats.size() >= 1){
             messageBox.MessageBox("WARNING", "Độc giả đã có phiếu đặt!!!", Alert.AlertType.ERROR).showAndWait();
+        }
+        else if(hanThe >= 1460){
+           messageBox.MessageBox("WARNING", "Thẻ của độc giả đã hết hạn!!!", Alert.AlertType.ERROR).showAndWait();
         }
         else {
             LocalDate date = LocalDate.now();
