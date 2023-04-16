@@ -74,6 +74,8 @@ public class ReaderController implements Initializable {
     private TextField txtSearch;
     @FXML
     private TableView tbReader;
+    @FXML
+    private TextField txtHanThe;
 
     @Override
 
@@ -117,6 +119,10 @@ public class ReaderController implements Initializable {
             txtEmail.setText(r.getEmail());
             txtPhone.setText(r.getSoDT());
             txtAddress.setText(r.getDiaChi());
+            dateNgayLapThe.setValue(new General().ConvertDateToLocalDate(r.getNgayLapThe()));
+            LocalDate expires = dateNgayLapThe.getValue().plusYears(4);
+            txtHanThe.setText(dateNgayLapThe.getValue() + " -> " + expires);
+            
         } catch (SQLException ex) {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -170,6 +176,9 @@ public class ReaderController implements Initializable {
             txtPhone.setText(r.getSoDT());
             txtAddress.setText(r.getDiaChi());
             dateNgayLapThe.setValue(new General().ConvertDateToLocalDate(r.getNgayLapThe()));
+            LocalDate expires = dateNgayLapThe.getValue().plusYears(4);
+            txtHanThe.setText(dateNgayLapThe.getValue() + " -> " + expires);
+            
         }
     }
 
@@ -186,15 +195,15 @@ public class ReaderController implements Initializable {
         String gender = comGender.getValue();
         LocalDate ngaysinh = datengaySinh.getValue();
         int day = ngaysinh.getDayOfMonth();
-        int month = ngaysinh.getMonthValue();
-        int year = ngaysinh.getYear() - 1990;
+        int month = ngaysinh.getMonthValue() - 1;
+        int year = ngaysinh.getYear() - 1900;
         Date birthday = new Date(year, month, day);
         String object = comObject.getValue();
         String bophan = txtBoPhan.getText();
-        LocalDate ngayLapthe = dateNgayLapThe.getValue();
+        LocalDate ngayLapthe = LocalDate.now();
         day = ngayLapthe.getDayOfMonth();
-        month = ngayLapthe.getMonthValue();
-        year = ngayLapthe.getYear() - 1990;
+        month = ngayLapthe.getMonthValue() - 1;
+        year = ngayLapthe.getYear() - 1900;
         Date createdday = new Date(year, month, day);
         String email = txtEmail.getText();
         String address = txtAddress.getText();
@@ -216,15 +225,15 @@ public class ReaderController implements Initializable {
         Gender gender = Gender.valueOf(comGender.getValue());
         LocalDate ngaysinh = datengaySinh.getValue();
         int day = ngaysinh.getDayOfMonth();
-        int month = ngaysinh.getMonthValue();
-        int year = ngaysinh.getYear() - 1990;
+        int month = ngaysinh.getMonthValue() - 1;
+        int year = ngaysinh.getYear() - 1900;
         Date birthday = new Date(year, month, day);
         DocGia.Object object = Object.valueOf(comObject.getValue());
         String bophan = txtBoPhan.getText();
         LocalDate ngayLapthe = dateNgayLapThe.getValue();
         day = ngayLapthe.getDayOfMonth();
-        month = ngayLapthe.getMonthValue();
-        year = ngayLapthe.getYear() - 1990;
+        month = ngayLapthe.getMonthValue() - 1;
+        year = ngayLapthe.getYear() - 1900;
         Date createdday = new Date(year, month, day);
         String email = txtEmail.getText();
         String address = txtAddress.getText();
@@ -262,5 +271,4 @@ public class ReaderController implements Initializable {
             new General().MessageBox("Thông Báo", "Bạn chưa chọn bất kỳ hành động nào", AlertType.WARNING).showAndWait();
         LoadDataView(tbReader);
     }
-
 }
