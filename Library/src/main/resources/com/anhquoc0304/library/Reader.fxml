@@ -57,6 +57,12 @@
             <DatePicker fx:id="dateNgayLapThe" prefHeight="23.0" prefWidth="398.0" />
          </children>
       </HBox>
+      <HBox prefHeight="30.0" prefWidth="884.0">
+         <children>
+            <Label styleClass="field" text="Hạn Thẻ" />
+            <TextField fx:id="txtHanThe" editable="false" prefHeight="23.0" prefWidth="399.0" />
+         </children>
+      </HBox>
       <HBox layoutX="10.0" layoutY="96.0" prefHeight="35.0" prefWidth="600.0">
          <children>
             <Label styleClass="field" text="Email" />
