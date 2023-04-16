@@ -48,7 +48,7 @@
       <HBox layoutX="10.0" layoutY="61.0" prefHeight="35.0" prefWidth="600.0">
          <children>
             <Label styleClass="field" text="Nơi Xuất Bản" />
-            <TextField fx:id="txtNoiXB" editable="false" promptText="Nhập nơi xuất bản" styleClass="input" />
+            <TextField fx:id="txtNoiXB" promptText="Nhập nơi xuất bản" styleClass="input" />
          </children>
       </HBox>
       <HBox layoutX="34.0" layoutY="289.0" prefHeight="35.0" prefWidth="600.0">
