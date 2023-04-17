@@ -214,6 +214,10 @@ public class TraSachController implements Initializable {
         lblTrangThai.setText("");
         lblSoLuong.setText("");
         lblNgayMuon.setText("");
+        lblContentM.setText("");
+        lblContenP.setText("");
+        lblTienPhat.setText("");
+        lblSoNgayTre.setText("");
     }
 
     public void xacNhanDatHandler(ActionEvent event) throws SQLException {
