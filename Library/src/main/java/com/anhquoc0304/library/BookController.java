@@ -39,6 +39,7 @@ import Utils.PrimaryKey;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.sql.Date;
+import javafx.application.Platform;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableRow;
 import pojo.Sach.StateOfBook;
@@ -148,9 +149,6 @@ public class BookController implements Initializable {
 
     @FXML
     private void AddClick(MouseEvent event) throws SQLException {
-        PrimaryKey key = new PrimaryKey();
-        txtID.setText(key.ID_4("SA", new SachServices().LastKey_Book()));
-        datenhap.setValue(LocalDate.now());
         
         txtID.setText("");
         txtName.setText("");
@@ -161,6 +159,9 @@ public class BookController implements Initializable {
         txtTacGia.setText("");
         txtTheLoai.setText("");
         txtSearch.setText("");
+        PrimaryKey key = new PrimaryKey();
+        txtID.setText(key.ID_4("SA", new SachServices().LastKey_Book()));
+        datenhap.setValue(LocalDate.now());
     }
 
     @FXML
@@ -239,7 +240,9 @@ public class BookController implements Initializable {
         try {
             namxb = Integer.parseInt(txtNamXB.getText());
         } catch (NumberFormatException ex) {
-            new General().MessageBox("Lỗi nhập số", "abc", AlertType.NONE).showAndWait();
+            Platform.runLater(() -> {
+            new General().MessageBox("Lỗi nhập số", ex.getMessage(), AlertType.ERROR).showAndWait();
+            });
             return;
         }
         String noixb = txtNoiXB.getText();
@@ -281,7 +284,9 @@ public class BookController implements Initializable {
         try {
             namxb = Integer.parseInt(txtNamXB.getText());
         } catch (NumberFormatException ex) {
-            new General().MessageBox("Lỗi nhập số", "abc", AlertType.NONE).showAndWait();
+            Platform.runLater(() -> {
+            new General().MessageBox("Lỗi nhập số", ex.getMessage(), AlertType.ERROR).showAndWait();
+            });
             return;
         }
         String noixb = txtNoiXB.getText();
