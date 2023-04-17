@@ -185,10 +185,6 @@ public class ReaderController implements Initializable {
 
     @FXML
     public void AddCLick(ActionEvent event) throws SQLException {
-        txtHanThe.setText("");
-        PrimaryKey key = new PrimaryKey();
-        txtID.setText(key.ID_4("DG", new DocGiaServices().LastKey_Reader()));
-        dateNgayLapThe.setValue(LocalDate.now());
 
         txtID.setText("");
         txtName.setText("");
@@ -198,6 +194,10 @@ public class ReaderController implements Initializable {
         txtHanThe.setText("");
         txtPhone.setText("");
         txtSearch.setText("");
+        txtHanThe.setText("");
+        PrimaryKey key = new PrimaryKey();
+        txtID.setText(key.ID_4("DG", new DocGiaServices().LastKey_Reader()));
+        dateNgayLapThe.setValue(LocalDate.now());
 
     }
 
