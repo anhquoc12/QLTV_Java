@@ -231,128 +231,123 @@ public class MuonSachController implements Initializable {
         List<PhieuMuon> phieudats = new ArrayList<>();
 
         General messageBox = new General();
-        DocGia dg = tbDocGia.getSelectionModel().getSelectedItem();
-        int hanThe = messageBox.CheckTime(dg.getNgayLapThe());
 
         PhieuMuonServices servicepm = new PhieuMuonServices();
         phieumuons = servicepm.getPhieuMuonByIDDocGia(lblMaDocGia.getText().strip());
         phieudats = servicepm.getPhieuDatByIDDocGia(lblMaDocGia.getText().strip());
         if (lblMaDocGia.getText().equals("")) {
             messageBox.MessageBox("WARNING", "Hãy chọn độc giả cần mượn sách!!!", Alert.AlertType.ERROR).showAndWait();
-        } 
-        else if(tbSachMuon.getItems().size() < 1 || tbSachMuon.getItems().size() > 5){
-            messageBox.MessageBox("WARNING", "Số lượng sách mượn Không hợp lệ!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else if(phieumuons.size() >= 1){
-            messageBox.MessageBox("WARNING", "Độc giả chưa trả hết số sách đã mượn!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else if(phieudats.size() >= 1){
-           messageBox.MessageBox("WARNING", "Độc giả đang đặt trước sách!!!", Alert.AlertType.ERROR).showAndWait(); 
-        }
-        else if(hanThe >= 1460){
-           messageBox.MessageBox("WARNING", "Thẻ của độc giả đã hết hạn!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else {
-            LocalDate date = LocalDate.now();
-            int d, m, y;
-            d = date.getDayOfMonth();
-            m = date.getMonthValue() - 1;
-            y = date.getYear() - 1900;
-            Date ngayMuon = new Date(y, m, d);
-            General gn = new General();
-            PhieuMuonServices sv = new PhieuMuonServices();
-            List<Sach> listSachs = new ArrayList<>();
-            for (Sach s : tbSachMuon.getItems()) {
-                listSachs.add(s);
-            }
-            String id = new PrimaryKey().ID_8("PM", new PhieuMuonServices().LastKey_PM());
-            PhieuMuon pm = new PhieuMuon(id, lblMaDocGia.getText(), ngayMuon, PhieuMuon.StateOfPM.CHUA_TRA);
-            List<ChiTietPhieuMuon> listCTPMs = new ArrayList<>();
-            for (int i = 0; i < listSachs.size(); i++) {
-                ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(pm.getMaPhieuMuon(), listSachs.get(i).getMaSach());
-                listCTPMs.add(ctpm);
-            }
-            try {
-                sv.luuPhieuMuon(pm, listCTPMs);
-                for (Sach s : listSachs) {
-                    sv.chuyenTrangThaiSach(s);
+        } else {
+            DocGia dg = tbDocGia.getSelectionModel().getSelectedItem();
+            int hanThe = messageBox.CheckTime(dg.getNgayLapThe());
+            if (hanThe >= 1460) {
+                messageBox.MessageBox("WARNING", "Thẻ của độc giả đã hết hạn!!!", Alert.AlertType.ERROR).showAndWait();
+            } else if (tbSachMuon.getItems().size() < 1 || tbSachMuon.getItems().size() > 5) {
+                messageBox.MessageBox("WARNING", "Số lượng sách mượn Không hợp lệ!!!", Alert.AlertType.ERROR).showAndWait();
+            } else if (phieumuons.size() >= 1) {
+                messageBox.MessageBox("WARNING", "Độc giả chưa trả hết số sách đã mượn!!!", Alert.AlertType.ERROR).showAndWait();
+            } else if (phieudats.size() >= 1) {
+                messageBox.MessageBox("WARNING", "Độc giả đang đặt trước sách!!!", Alert.AlertType.ERROR).showAndWait();
+            } else {
+                LocalDate date = LocalDate.now();
+                int d, m, y;
+                d = date.getDayOfMonth();
+                m = date.getMonthValue() - 1;
+                y = date.getYear() - 1900;
+                Date ngayMuon = new Date(y, m, d);
+                General gn = new General();
+                PhieuMuonServices sv = new PhieuMuonServices();
+                List<Sach> listSachs = new ArrayList<>();
+                for (Sach s : tbSachMuon.getItems()) {
+                    listSachs.add(s);
                 }
-                gn.MessageBox("THÔNG BÁO", "Lập phiếu mượn thành công!!!", Alert.AlertType.INFORMATION).showAndWait();
-                tbSachMuon.getItems().clear();
-                tbSachMuon.getItems().clear();
-                tbDocGia.getSelectionModel().clearSelection();
-                clearInfoDocGia();
-            } catch (SQLException ex) {
-                gn.MessageBox("ERROR", ex.getMessage(), Alert.AlertType.INFORMATION).showAndWait();
+                String id = new PrimaryKey().ID_8("PM", new PhieuMuonServices().LastKey_PM());
+                PhieuMuon pm = new PhieuMuon(id, lblMaDocGia.getText(), ngayMuon, PhieuMuon.StateOfPM.CHUA_TRA);
+                List<ChiTietPhieuMuon> listCTPMs = new ArrayList<>();
+                for (int i = 0; i < listSachs.size(); i++) {
+                    ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(pm.getMaPhieuMuon(), listSachs.get(i).getMaSach());
+                    listCTPMs.add(ctpm);
+                }
+                try {
+                    sv.luuPhieuMuon(pm, listCTPMs);
+                    for (Sach s : listSachs) {
+                        sv.chuyenTrangThaiSach(s);
+                    }
+                    gn.MessageBox("THÔNG BÁO", "Lập phiếu mượn thành công!!!", Alert.AlertType.INFORMATION).showAndWait();
+                    tbSachMuon.getItems().clear();
+                    tbSachMuon.getItems().clear();
+                    tbDocGia.getSelectionModel().clearSelection();
+                    clearInfoDocGia();
+                } catch (SQLException ex) {
+                    gn.MessageBox("ERROR", ex.getMessage(), Alert.AlertType.INFORMATION).showAndWait();
+                }
             }
+
         }
     }
 
     public void lapPhieuDatHandler(ActionEvent event) throws SQLException {
         List<PhieuMuon> phieumuons = new ArrayList<>();
         List<PhieuMuon> phieudats = new ArrayList<>();
-        DocGia dg = tbDocGia.getSelectionModel().getSelectedItem();
-
         General messageBox = new General();
-        int hanThe = messageBox.CheckTime(dg.getNgayLapThe());
-
         PhieuMuonServices servicepm = new PhieuMuonServices();
         phieumuons = servicepm.getPhieuMuonByIDDocGia(lblMaDocGia.getText().strip());
         phieudats = servicepm.getPhieuDatByIDDocGia(lblMaDocGia.getText().strip());
         if (lblMaDocGia.getText().equals("")) {
             messageBox.MessageBox("WARNING", "Hãy chọn độc giả cần đặt sách", Alert.AlertType.ERROR).showAndWait();
-        } 
-        else if(tbSachMuon.getItems().size() < 1 || tbSachMuon.getItems().size() > 5){
-            messageBox.MessageBox("WARNING", "Số lượng sách đặt Không hợp lệ!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else if(phieumuons.size() >= 1){
-            messageBox.MessageBox("WARNING", "Độc giả chưa trả hết số sách đã mượn!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else if(phieudats.size() >= 1){
-            messageBox.MessageBox("WARNING", "Độc giả đã có phiếu đặt!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else if(hanThe >= 1460){
-           messageBox.MessageBox("WARNING", "Thẻ của độc giả đã hết hạn!!!", Alert.AlertType.ERROR).showAndWait();
-        }
-        else {
-            LocalDate date = LocalDate.now();
-            int d, m, y;
-            d = date.getDayOfMonth();
-            m = date.getMonthValue() - 1;
-            y = date.getYear() - 1900;
-            Date ngayMuon = new Date(y, m, d);
-            General gn = new General();
-            PhieuMuonServices sv = new PhieuMuonServices();
-            List<Sach> listSachs = new ArrayList<>();
-            for (Sach s : tbSachMuon.getItems()) {
-                listSachs.add(s);
-            }
-            String id = new PrimaryKey().ID_8("PM", new PhieuMuonServices().LastKey_PM());
-            PhieuMuon pm = new PhieuMuon(id, lblMaDocGia.getText(), ngayMuon, PhieuMuon.StateOfPM.DANG_DAT);
-            List<ChiTietPhieuMuon> listCTPMs = new ArrayList<>();
-            for (int i = 0; i < listSachs.size(); i++) {
-                ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(pm.getMaPhieuMuon(), listSachs.get(i).getMaSach());
-                listCTPMs.add(ctpm);
-            }
-            try {
-                sv.luuPhieuMuon(pm, listCTPMs);
-                for (Sach s : listSachs) {
-                    sv.chuyenTrangThaiSachDat(s);
+        } else {
+            DocGia dg = tbDocGia.getSelectionModel().getSelectedItem();
+            int hanThe = messageBox.CheckTime(dg.getNgayLapThe());
+            if (tbSachMuon.getItems().size() < 1 || tbSachMuon.getItems().size() > 5) {
+                messageBox.MessageBox("WARNING", "Số lượng sách đặt Không hợp lệ!!!", Alert.AlertType.ERROR).showAndWait();
+            } else if (phieumuons.size() >= 1) {
+                messageBox.MessageBox("WARNING", "Độc giả chưa trả hết số sách đã mượn!!!", Alert.AlertType.ERROR).showAndWait();
+            } else if (phieudats.size() >= 1) {
+                messageBox.MessageBox("WARNING", "Độc giả đã có phiếu đặt!!!", Alert.AlertType.ERROR).showAndWait();
+            } else if (hanThe >= 1460) {
+                messageBox.MessageBox("WARNING", "Thẻ của độc giả đã hết hạn!!!", Alert.AlertType.ERROR).showAndWait();
+            } else {
+                LocalDate date = LocalDate.now();
+                int d, m, y;
+                d = date.getDayOfMonth();
+                m = date.getMonthValue() - 1;
+                y = date.getYear() - 1900;
+                Date ngayMuon = new Date(y, m, d);
+                General gn = new General();
+                PhieuMuonServices sv = new PhieuMuonServices();
+                List<Sach> listSachs = new ArrayList<>();
+                for (Sach s : tbSachMuon.getItems()) {
+                    listSachs.add(s);
                 }
-                gn.MessageBox("THÔNG BÁO", "Lập phiếu đặt thành công!!!", Alert.AlertType.INFORMATION).showAndWait();
-                tbSachMuon.getItems().clear();
-                tbDocGia.getSelectionModel().clearSelection();
-                clearInfoDocGia();
-            } catch (SQLException ex) {
-                gn.MessageBox("ERROR", ex.getMessage(), Alert.AlertType.INFORMATION).showAndWait();
+                String id = new PrimaryKey().ID_8("PM", new PhieuMuonServices().LastKey_PM());
+                PhieuMuon pm = new PhieuMuon(id, lblMaDocGia.getText(), ngayMuon, PhieuMuon.StateOfPM.DANG_DAT);
+                List<ChiTietPhieuMuon> listCTPMs = new ArrayList<>();
+                for (int i = 0; i < listSachs.size(); i++) {
+                    ChiTietPhieuMuon ctpm = new ChiTietPhieuMuon(pm.getMaPhieuMuon(), listSachs.get(i).getMaSach());
+                    listCTPMs.add(ctpm);
+                }
+                try {
+                    sv.luuPhieuMuon(pm, listCTPMs);
+                    for (Sach s : listSachs) {
+                        sv.chuyenTrangThaiSachDat(s);
+                    }
+                    gn.MessageBox("THÔNG BÁO", "Lập phiếu đặt thành công!!!", Alert.AlertType.INFORMATION).showAndWait();
+                    tbSachMuon.getItems().clear();
+                    tbDocGia.getSelectionModel().clearSelection();
+                    clearInfoDocGia();
+                } catch (SQLException ex) {
+                    gn.MessageBox("ERROR", ex.getMessage(), Alert.AlertType.INFORMATION).showAndWait();
+                }
             }
         }
+
     }
 
     public void exitHandler(ActionEvent evevnt) {
         Platform.exit();
     }
-    private void clearInfoDocGia(){
+
+    private void clearInfoDocGia() {
         this.lblMaDocGia.setText("");
         this.lblTenDocGia.setText("");
         this.lblDoiTuong.setText("");
