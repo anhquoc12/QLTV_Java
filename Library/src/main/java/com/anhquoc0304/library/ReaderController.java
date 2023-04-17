@@ -189,7 +189,7 @@ public class ReaderController implements Initializable {
         PrimaryKey key = new PrimaryKey();
         txtID.setText(key.ID_4("DG", new DocGiaServices().LastKey_Reader()));
         dateNgayLapThe.setValue(LocalDate.now());
-        
+
         txtID.setText("");
         txtName.setText("");
         txtAddress.setText("");
@@ -198,7 +198,7 @@ public class ReaderController implements Initializable {
         txtHanThe.setText("");
         txtPhone.setText("");
         txtSearch.setText("");
-        
+
     }
 
     public void AddReader() throws SQLException {
@@ -306,13 +306,13 @@ public class ReaderController implements Initializable {
     }
 
     public boolean checkSDT(String phone) {
-        int sdt = 0;
-        try {
-            sdt = Integer.parseInt(phone);
-            return true;
-        } catch (Exception ex) {
-            return false;
+        for (int i = 0; i < phone.length(); i++)
+        {
+            char index = phone.charAt(i);
+            if ((int) index < 48 || (int) index > 57)
+                return false;
         }
-    
-    } 
+        return true;
+
+    }
 }
