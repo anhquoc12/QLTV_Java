@@ -10,10 +10,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import pojo.Sach;
 import pojo.Sach.StateOfBook;
 import Utils.PrimaryKey;
@@ -29,7 +29,7 @@ public class UnitTest_SachServices {
     private static Connection conn;
     private static SachServices service;
 
-    @BeforeClass
+    @BeforeAll
     public static void ConnectDB() {
         try {
             conn = JdbcUtils.getConn();
@@ -41,7 +41,7 @@ public class UnitTest_SachServices {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void CloseDB() {
         try {
             conn.close();
@@ -56,9 +56,9 @@ public class UnitTest_SachServices {
         String kw = "Harry";
         try {
             List<Sach> books = service.GetBookByName(kw);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             for (Sach s : books) {
-                Assert.assertTrue(s.getTenSach().contains(kw));
+                Assertions.assertTrue(s.getTenSach().contains(kw));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -70,9 +70,9 @@ public class UnitTest_SachServices {
         String kw = "Ánh";
         try {
             List<Sach> books = service.GetBookByTacGia(kw);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             for (Sach s : books) {
-                Assert.assertTrue(s.getTacGia().contains(kw));
+                Assertions.assertTrue(s.getTacGia().contains(kw));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,9 +84,9 @@ public class UnitTest_SachServices {
         String kw = "Văn học nước ngoài";
         try {
             List<Sach> books = service.GetBookByDanhMuc(kw);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             for (Sach s : books) {
-                Assert.assertTrue(s.getTheLoai().contains(kw));
+                Assertions.assertTrue(s.getTheLoai().contains(kw));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,9 +98,9 @@ public class UnitTest_SachServices {
         String kw = "2000";
         try {
             List<Sach> books = service.GetBookByNamXB(kw);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             for (Sach s : books) {
-                Assert.assertTrue(s.getNamXB() == Integer.parseInt(kw));
+                Assertions.assertTrue(s.getNamXB() == Integer.parseInt(kw));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -125,7 +125,7 @@ public class UnitTest_SachServices {
             Date ngayNhap = new Date(year, month, day);
             String mota = "Kiểm thử chức năng thêm 1 quyển sách";
             Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
-            Assert.assertTrue(service.AddBook(s));
+            Assertions.assertTrue(service.AddBook(s));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
 
@@ -150,7 +150,7 @@ public class UnitTest_SachServices {
             Date ngayNhap = new Date(year, month, day);
             String mota = "Kiểm thử chức năng thêm 1 quyển sách";
             Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
-            Assert.assertTrue(service.EditBook(s));
+            Assertions.assertTrue(service.EditBook(s));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -160,7 +160,7 @@ public class UnitTest_SachServices {
     public void TestCase_DeleteBook() {
         try {
             String id = "SA0051";
-            Assert.assertTrue(service.DeleteBook(id));
+            Assertions.assertTrue(service.DeleteBook(id));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,11 +171,11 @@ public class UnitTest_SachServices {
         List<Sach> books;
         try {
             books = service.listDachKhaDung();
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             if (!books.isEmpty()) {
                 StateOfBook state = StateOfBook.KHA_DUNG;
                 for (Sach s : books) {
-                    Assert.assertEquals(s.getTrangThai(), state);
+                    Assertions.assertEquals(s.getTrangThai(), state);
                 }
             }
         } catch (SQLException ex) {
@@ -187,11 +187,11 @@ public class UnitTest_SachServices {
         String kw = "Harry";
         try {
             List<Sach> books = service.listSachKhaDungByName(kw);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             if (!books.isEmpty()) {
                 StateOfBook state = StateOfBook.KHA_DUNG;
                 for (Sach s : books) {
-                    Assert.assertEquals(s.getTrangThai(), state);
+                    Assertions.assertEquals(s.getTrangThai(), state);
                 }
             }
         } catch (SQLException ex) {
@@ -203,11 +203,11 @@ public class UnitTest_SachServices {
         String id = "SA0003";
         try {
             List<Sach> books = service.listSachKhaDungByID(id);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             if (!books.isEmpty()) {
                 StateOfBook state = StateOfBook.KHA_DUNG;
                 for (Sach s : books) {
-                    Assert.assertEquals(s.getTrangThai(), state);
+                    Assertions.assertEquals(s.getTrangThai(), state);
                 }
             }
         } catch (SQLException ex) {
@@ -220,11 +220,11 @@ public class UnitTest_SachServices {
         String kw = "Paulo";
         try {
             List<Sach> books = service.listSachKhaDungByTG(kw);
-            Assert.assertTrue(!books.isEmpty());
+            Assertions.assertTrue(!books.isEmpty());
             if (!books.isEmpty()) {
                 StateOfBook state = StateOfBook.KHA_DUNG;
                 for (Sach s : books) {
-                    Assert.assertEquals(s.getTrangThai(), state);
+                    Assertions.assertEquals(s.getTrangThai(), state);
                 }
             }
         } catch (SQLException ex) {

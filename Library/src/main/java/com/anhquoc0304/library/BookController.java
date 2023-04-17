@@ -132,7 +132,7 @@ public class BookController implements Initializable {
     public void RowCLick(MouseEvent event) {
 
         TableView<Sach> table = (TableView<Sach>) event.getSource();
-        Sach s = table.getSelectionModel().getSelectedItem();       
+        Sach s = table.getSelectionModel().getSelectedItem();
         if (s != null) {
             txtID.setText(s.getMaSach());
             txtName.setText(s.getTenSach());
@@ -151,6 +151,16 @@ public class BookController implements Initializable {
         PrimaryKey key = new PrimaryKey();
         txtID.setText(key.ID_4("SA", new SachServices().LastKey_Book()));
         datenhap.setValue(LocalDate.now());
+        
+        txtID.setText("");
+        txtName.setText("");
+        txtDescription.setText("");
+        txtNamXB.setText("");
+        txtNoiXB.setText("");
+        txtPosition.setText("");
+        txtTacGia.setText("");
+        txtTheLoai.setText("");
+        txtSearch.setText("");
     }
 
     @FXML
@@ -215,11 +225,23 @@ public class BookController implements Initializable {
     }
 
     private void AddBook() throws SQLException {
+        if (txtName.getText().isEmpty() || txtTacGia.getText().isEmpty()
+                || txtTheLoai.getText().isEmpty() || txtNoiXB.getText().isEmpty()
+                || txtPosition.getText().isEmpty() || txtNamXB.getText().isEmpty()) {
+            new General().MessageBox("Thông Báo", "Vui lòng nhập đủ thông tin", AlertType.ERROR).showAndWait();
+            return;
+        }
         String id = txtID.getText();
         String name = txtName.getText();
         String tacgia = txtTacGia.getText();
         String theloai = txtTheLoai.getText();
-        int namxb = Integer.parseInt(txtNamXB.getText());
+        int namxb;
+        try {
+            namxb = Integer.parseInt(txtNamXB.getText());
+        } catch (NumberFormatException ex) {
+            new General().MessageBox("Lỗi nhập số", "abc", AlertType.NONE).showAndWait();
+            return;
+        }
         String noixb = txtNoiXB.getText();
         String vitri = txtPosition.getText();
         StateOfBook trangThai = Sach.StateOfBook.KHA_DUNG;
@@ -229,43 +251,52 @@ public class BookController implements Initializable {
         Date ngayNhap = new Date(year, month, day);
         String mota = txtDescription.getText();
         Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
-
-        if ( new SachServices().AddBook(s)) {
+        if (new SachServices().AddBook(s)) {
             new General().MessageBox("Thông Báo", "Thêm Thành Công", AlertType.INFORMATION).showAndWait();
         } else {
             new General().MessageBox("Thông Báo", "Thêm Thất Bại", AlertType.ERROR).showAndWait();
         }
     }
-    
-    private void DeleteBook() throws SQLException
-    {
+
+    private void DeleteBook() throws SQLException {
         if (new SachServices().DeleteBook(txtID.getText())) {
-                new General().MessageBox("Thông Báo", "Xóa Thành Công", AlertType.INFORMATION).showAndWait();
-            } else {
-                new General().MessageBox("Thông Báo", "Xóa Thất Bại", AlertType.ERROR).showAndWait();
-            }
+            new General().MessageBox("Thông Báo", "Xóa Thành Công", AlertType.INFORMATION).showAndWait();
+        } else {
+            new General().MessageBox("Thông Báo", "Xóa Thất Bại", AlertType.ERROR).showAndWait();
+        }
     }
-    
-    private void EditBook() throws SQLException
-    {
+
+    private void EditBook() throws SQLException {
+        if (txtName.getText().isEmpty() || txtTacGia.getText().isEmpty()
+                || txtTheLoai.getText().isEmpty() || txtNoiXB.getText().isEmpty()
+                || txtPosition.getText().isEmpty() || txtNamXB.getText().isEmpty()) {
+            new General().MessageBox("Thông Báo", "Vui lòng nhập đủ thông tin", AlertType.ERROR).showAndWait();
+            return;
+        }
         String id = txtID.getText();
-            String name = txtName.getText();
-            String tacgia = txtTacGia.getText();
-            String theloai = txtTheLoai.getText();
-            int namxb = Integer.parseInt(txtNamXB.getText());
-            String noixb = txtNoiXB.getText();
-            String vitri = txtPosition.getText();
-            StateOfBook trangThai = Sach.StateOfBook.KHA_DUNG;
-            int day = datenhap.getValue().getDayOfMonth();
-            int month = datenhap.getValue().getMonthValue() - 1;
-            int year = datenhap.getValue().getYear() - 1990;
-            Date ngayNhap = new Date(year, month, day);
-            String mota = txtDescription.getText();
-            Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
-            if (new Services.SachServices().EditBook(s)) {
-                new General().MessageBox("Thông Báo", "Sửa Thành Công", AlertType.INFORMATION).showAndWait();
-            } else {
-                new General().MessageBox("Thông Báo", "Sửa Thất Bại", AlertType.ERROR).showAndWait();
-            }
+        String name = txtName.getText();
+        String tacgia = txtTacGia.getText();
+        String theloai = txtTheLoai.getText();
+        int namxb;
+        try {
+            namxb = Integer.parseInt(txtNamXB.getText());
+        } catch (NumberFormatException ex) {
+            new General().MessageBox("Lỗi nhập số", "abc", AlertType.NONE).showAndWait();
+            return;
+        }
+        String noixb = txtNoiXB.getText();
+        String vitri = txtPosition.getText();
+        StateOfBook trangThai = Sach.StateOfBook.KHA_DUNG;
+        int day = datenhap.getValue().getDayOfMonth();
+        int month = datenhap.getValue().getMonthValue() - 1;
+        int year = datenhap.getValue().getYear() - 1900;
+        Date ngayNhap = new Date(year, month, day);
+        String mota = txtDescription.getText();
+        Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
+        if (new Services.SachServices().EditBook(s)) {
+            new General().MessageBox("Thông Báo", "Sửa Thành Công", AlertType.INFORMATION).showAndWait();
+        } else {
+            new General().MessageBox("Thông Báo", "Sửa Thất Bại", AlertType.ERROR).showAndWait();
+        }
     }
 }

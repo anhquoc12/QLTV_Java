@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.BeforeClass;
-import org.junit.AfterClass;
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import pojo.DocGia;
 import Utils.PrimaryKey;
 import java.time.Month;
@@ -31,7 +31,7 @@ public class UnitTest_DocGiaServices {
     private static Connection conn;
     private static DocGiaServices service;
 
-    @BeforeClass
+    @BeforeAll
     public static void ConnectDB() {
         try {
             conn = JdbcUtils.getConn();
@@ -43,7 +43,7 @@ public class UnitTest_DocGiaServices {
         }
     }
 
-    @AfterClass
+    @AfterAll
     public static void CloseDB() {
         try {
             conn.close();
@@ -58,14 +58,14 @@ public class UnitTest_DocGiaServices {
         String kw = "Michael";
         try {
             List<DocGia> readers = service.GetDocGiaByName(kw);
-            Assert.assertTrue(!readers.isEmpty());
+            Assertions.assertTrue(!readers.isEmpty());
             for (DocGia d : readers) {
-                Assert.assertTrue(d.getTenDocGia().contains(kw));
+                Assertions.assertTrue(d.getTenDocGia().contains(kw));
             }
             readers = service.listDocGiaByName(kw);
-            Assert.assertTrue(!readers.isEmpty());
+            Assertions.assertTrue(!readers.isEmpty());
             for (DocGia d : readers) {
-                Assert.assertTrue(d.getTenDocGia().contains(kw));
+                Assertions.assertTrue(d.getTenDocGia().contains(kw));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_DocGiaServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,9 +77,9 @@ public class UnitTest_DocGiaServices {
         String kw = "DG";
         try {
             List<DocGia> readers = service.listDocGiaByID(kw);
-            Assert.assertTrue(!readers.isEmpty());
+            Assertions.assertTrue(!readers.isEmpty());
             for (DocGia d : readers) {
-                Assert.assertTrue(d.getMaDocGia().contains(kw));
+                Assertions.assertTrue(d.getMaDocGia().contains(kw));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_DocGiaServices.class.getName()).log(Level.SEVERE, null, ex);
@@ -111,7 +111,7 @@ public class UnitTest_DocGiaServices {
 
             DocGia r = new DocGia(id, name, gender, birthday, object,
                     createdday, phone, address, bophan, email);
-            Assert.assertTrue(service.AddReader(r));
+            Assertions.assertTrue(service.AddReader(r));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_DocGiaServices.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -141,7 +141,7 @@ public class UnitTest_DocGiaServices {
 
             DocGia r = new DocGia(id, name, gender, birthday, object,
                     createdday, phone, address, bophan, email);
-            Assert.assertTrue(service.EditReader(r));
+            Assertions.assertTrue(service.EditReader(r));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_DocGiaServices.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -152,7 +152,7 @@ public class UnitTest_DocGiaServices {
 
         try {
             String id = "DG0102";
-            Assert.assertTrue(service.DeleteReader(id));
+            Assertions.assertTrue(service.DeleteReader(id));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_DocGiaServices.class.getName()).log(Level.SEVERE, null, ex);
         }
