@@ -19,8 +19,10 @@ import pojo.Sach;
  * @author dell
  */
 public class SachServices {
-    public SachServices() {}
-    
+
+    public SachServices() {
+    }
+
     public List<Sach> SachList() throws SQLException {
         List<Sach> books = new ArrayList<>();
         try (Connection conn = JdbcUtils.getConn()) {
@@ -189,7 +191,6 @@ public class SachServices {
 
     public boolean AddBook(Sach s) throws SQLException {
         try (Connection conn = JdbcUtils.getConn()) {
-
             String sql = "INSERT INTO Sach(maSach, tenSach, tacGia, theLoai, namXB, noiXB, ngayNhap, viTri, trangThai, motaSach)";
             sql += " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stm = conn.prepareStatement(sql);

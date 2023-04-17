@@ -26,6 +26,7 @@ import Services.DocGiaServices;
 import Utils.PrimaryKey;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -122,7 +123,7 @@ public class ReaderController implements Initializable {
             dateNgayLapThe.setValue(new General().ConvertDateToLocalDate(r.getNgayLapThe()));
             LocalDate expires = dateNgayLapThe.getValue().plusYears(4);
             txtHanThe.setText(dateNgayLapThe.getValue() + " -> " + expires);
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(BookController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -178,18 +179,26 @@ public class ReaderController implements Initializable {
             dateNgayLapThe.setValue(new General().ConvertDateToLocalDate(r.getNgayLapThe()));
             LocalDate expires = dateNgayLapThe.getValue().plusYears(4);
             txtHanThe.setText(dateNgayLapThe.getValue() + " -> " + expires);
-            
+
         }
     }
 
     @FXML
     public void AddCLick(ActionEvent event) throws SQLException {
+        txtHanThe.setText("");
         PrimaryKey key = new PrimaryKey();
         txtID.setText(key.ID_4("DG", new DocGiaServices().LastKey_Reader()));
         dateNgayLapThe.setValue(LocalDate.now());
     }
 
     public void AddReader() throws SQLException {
+        if (txtID.getText().isEmpty() || txtName.getText().isEmpty()
+                || txtBoPhan.getText().isEmpty() || txtEmail.getText().isEmpty()
+                || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+            new General().MessageBox("Thông Báo", "Vui lòng nhập đủ thông tin", AlertType.ERROR).showAndWait();
+            return;
+        }
+
         String id = txtID.getText();
         String name = txtName.getText();
         String gender = comGender.getValue();
@@ -220,17 +229,24 @@ public class ReaderController implements Initializable {
     }
 
     private void EditReader() throws SQLException {
+        if (txtID.getText().isEmpty() || txtName.getText().isEmpty()
+                || txtBoPhan.getText().isEmpty() || txtEmail.getText().isEmpty()
+                || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+            new General().MessageBox("Thông Báo", "Vui lòng nhập đủ thông tin", AlertType.ERROR).showAndWait();
+            return;
+        }
+
         String id = txtID.getText();
         String name = txtName.getText();
-        Gender gender = Gender.valueOf(comGender.getValue());
+        String gender = comGender.getValue();
         LocalDate ngaysinh = datengaySinh.getValue();
         int day = ngaysinh.getDayOfMonth();
         int month = ngaysinh.getMonthValue() - 1;
         int year = ngaysinh.getYear() - 1900;
         Date birthday = new Date(year, month, day);
-        DocGia.Object object = Object.valueOf(comObject.getValue());
+        String object = comObject.getValue();
         String bophan = txtBoPhan.getText();
-        LocalDate ngayLapthe = dateNgayLapThe.getValue();
+        LocalDate ngayLapthe = LocalDate.now();
         day = ngayLapthe.getDayOfMonth();
         month = ngayLapthe.getMonthValue() - 1;
         year = ngayLapthe.getYear() - 1900;
@@ -239,7 +255,8 @@ public class ReaderController implements Initializable {
         String address = txtAddress.getText();
         String phone = txtPhone.getText();
 
-        DocGia r = new DocGia(id, name, gender, birthday, object,
+        DocGia r = new DocGia(id, name, DocGia.Gender.valueOf(gender), birthday, 
+                DocGia.Object.valueOf(object),
                 createdday, phone, address, bophan, email);
 
         if (new DocGiaServices().EditReader(r)) {
@@ -266,9 +283,9 @@ public class ReaderController implements Initializable {
             EditReader();
         } else if (tgDelete.isSelected()) {
             DeleteReader();
-        } 
-        else
+        } else {
             new General().MessageBox("Thông Báo", "Bạn chưa chọn bất kỳ hành động nào", AlertType.WARNING).showAndWait();
+        }
         LoadDataView(tbReader);
     }
 }
