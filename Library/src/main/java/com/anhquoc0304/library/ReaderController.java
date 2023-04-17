@@ -189,12 +189,23 @@ public class ReaderController implements Initializable {
         PrimaryKey key = new PrimaryKey();
         txtID.setText(key.ID_4("DG", new DocGiaServices().LastKey_Reader()));
         dateNgayLapThe.setValue(LocalDate.now());
+        
+        txtID.setText("");
+        txtName.setText("");
+        txtAddress.setText("");
+        txtBoPhan.setText("");
+        txtEmail.setText("");
+        txtHanThe.setText("");
+        txtPhone.setText("");
+        txtSearch.setText("");
+        
     }
 
     public void AddReader() throws SQLException {
         if (txtID.getText().isEmpty() || txtName.getText().isEmpty()
                 || txtBoPhan.getText().isEmpty() || txtEmail.getText().isEmpty()
-                || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+                || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()
+                || !checkEmail(txtEmail.getText()) || !checkSDT(txtPhone.getText())) {
             new General().MessageBox("Thông Báo", "Vui lòng nhập đủ thông tin", AlertType.ERROR).showAndWait();
             return;
         }
@@ -231,7 +242,8 @@ public class ReaderController implements Initializable {
     private void EditReader() throws SQLException {
         if (txtID.getText().isEmpty() || txtName.getText().isEmpty()
                 || txtBoPhan.getText().isEmpty() || txtEmail.getText().isEmpty()
-                || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()) {
+                || txtAddress.getText().isEmpty() || txtPhone.getText().isEmpty()
+                || !checkEmail(txtEmail.getText()) || !checkSDT(txtPhone.getText())) {
             new General().MessageBox("Thông Báo", "Vui lòng nhập đủ thông tin", AlertType.ERROR).showAndWait();
             return;
         }
@@ -255,7 +267,7 @@ public class ReaderController implements Initializable {
         String address = txtAddress.getText();
         String phone = txtPhone.getText();
 
-        DocGia r = new DocGia(id, name, DocGia.Gender.valueOf(gender), birthday, 
+        DocGia r = new DocGia(id, name, DocGia.Gender.valueOf(gender), birthday,
                 DocGia.Object.valueOf(object),
                 createdday, phone, address, bophan, email);
 
@@ -288,4 +300,19 @@ public class ReaderController implements Initializable {
         }
         LoadDataView(tbReader);
     }
+
+    public boolean checkEmail(String email) {
+        return email.contains("@") && email.contains(".");
+    }
+
+    public boolean checkSDT(String phone) {
+        int sdt = 0;
+        try {
+            sdt = Integer.parseInt(phone);
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    
+    } 
 }

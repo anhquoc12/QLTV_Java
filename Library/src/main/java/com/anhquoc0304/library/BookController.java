@@ -151,6 +151,16 @@ public class BookController implements Initializable {
         PrimaryKey key = new PrimaryKey();
         txtID.setText(key.ID_4("SA", new SachServices().LastKey_Book()));
         datenhap.setValue(LocalDate.now());
+        
+        txtID.setText("");
+        txtName.setText("");
+        txtDescription.setText("");
+        txtNamXB.setText("");
+        txtNoiXB.setText("");
+        txtPosition.setText("");
+        txtTacGia.setText("");
+        txtTheLoai.setText("");
+        txtSearch.setText("");
     }
 
     @FXML
