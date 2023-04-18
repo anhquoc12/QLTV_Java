@@ -130,12 +130,34 @@ public class UnitTest_SachServices {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
 
         }
+        
+        try {
+            String id = "SA0009";
+            String name = "Test Case AddBook 2";
+            String tacgia = "Nguyễn Anh Quốc";
+            String theloai = "Unit test SachServices";
+            int namxb = 2022;
+            String noixb = "NXB Test";
+            String vitri = "A3-1-1";
+            Sach.StateOfBook trangThai = Sach.StateOfBook.KHA_DUNG;
+            LocalDate n = LocalDate.now();
+            int day = n.getDayOfMonth();
+            int month = n.getMonthValue() - 1;
+            int year = n.getYear() - 1900;
+            Date ngayNhap = new Date(year, month, day);
+            String mota = "Kiểm thử chức năng thêm 1 quyển sách";
+            Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
+            Assertions.assertFalse(service.AddBook(s));
+        } catch (SQLException ex) {
+            Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
     }
 
     @Test
     public void TestCase_EditBook() {
         try {
-            String id = "SA0049";
+            String id = "SA0008";
             String name = "Test Case AddBook 1";
             String tacgia = "Nguyễn Anh Quốc";
             String theloai = "Unit test SachServices";
@@ -154,13 +176,41 @@ public class UnitTest_SachServices {
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        try {
+            String id = "SA9999";
+            String name = "Test Case AddBook 1";
+            String tacgia = "Nguyễn Anh Quốc";
+            String theloai = "Unit test SachServices";
+            int namxb = 2022;
+            String noixb = "NXB Test";
+            String vitri = "A3-1-1";
+            Sach.StateOfBook trangThai = Sach.StateOfBook.KHA_DUNG;
+            LocalDate n = LocalDate.now();
+            int day = n.getDayOfMonth();
+            int month = n.getMonthValue() - 1;
+            int year = n.getYear() - 1900;
+            Date ngayNhap = new Date(year, month, day);
+            String mota = "Kiểm thử chức năng thêm 1 quyển sách";
+            Sach s = new Sach(id, name, tacgia, theloai, namxb, noixb, ngayNhap, vitri, trangThai, mota);
+            Assertions.assertFalse(service.EditBook(s));
+        } catch (SQLException ex) {
+            Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Test
     public void TestCase_DeleteBook() {
         try {
-            String id = "SA0051";
+            String id = "SA0054";
             Assertions.assertTrue(service.DeleteBook(id));
+        } catch (SQLException ex) {
+            Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            String id = "SA9999";
+            Assertions.assertFalse(service.DeleteBook(id));
         } catch (SQLException ex) {
             Logger.getLogger(UnitTest_SachServices.class.getName()).log(Level.SEVERE, null, ex);
         }
