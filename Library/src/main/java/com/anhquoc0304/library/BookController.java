@@ -42,6 +42,7 @@ import java.sql.Date;
 import javafx.application.Platform;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableRow;
+import javafx.scene.control.TextFormatter;
 import pojo.Sach.StateOfBook;
 
 /**
@@ -88,7 +89,31 @@ public class BookController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        SachServices first = new SachServices();
+        TextFormatter<String> format_tacgia = new TextFormatter<>(change -> {
+            if (change.getText().matches("[a-zA-Z\\p{L} ]*")) {
+                return change;
+            } else {
+                return null;
+            }
+        });
+
+        TextFormatter<String> format_theloai = new TextFormatter<>(change -> {
+            if (change.getText().matches("[a-zA-Z\\p{L} ]*")) {
+                return change;
+            } else {
+                return null;
+            }
+        });
+        TextFormatter<String> format_noixb = new TextFormatter<>(change -> {
+            if (change.getText().matches("[a-zA-Z\\p{L} ]*")) {
+                return change;
+            } else {
+                return null;
+            }
+        });
+        txtTacGia.setTextFormatter(format_tacgia);
+        txtTheLoai.setTextFormatter(format_theloai);
+        txtNoiXB.setTextFormatter(format_noixb);
         try {
             tbBook.getSelectionModel().select(0);
             Sach s = new SachServices().FirstBook();
@@ -149,7 +174,7 @@ public class BookController implements Initializable {
 
     @FXML
     private void AddClick(MouseEvent event) throws SQLException {
-        
+
         txtID.setText("");
         txtName.setText("");
         txtDescription.setText("");
@@ -169,10 +194,13 @@ public class BookController implements Initializable {
         SachServices service = new SachServices();
         if (tgAdd.isSelected()) {
             AddBook();
+            tgAdd.setSelected(false);
         } else if (tgDelete.isSelected()) {
             DeleteBook();
+            tgDelete.setSelected(false);
         } else if (tgEdit.isSelected()) {
             EditBook();
+            tgEdit.setSelected(false);
         } else {
             new General().MessageBox("Thông Báo", "Bạn chưa chọn bất kỳ hành động nào", AlertType.WARNING).showAndWait();
         }
@@ -241,7 +269,7 @@ public class BookController implements Initializable {
             namxb = Integer.parseInt(txtNamXB.getText());
         } catch (NumberFormatException ex) {
             Platform.runLater(() -> {
-            new General().MessageBox("Lỗi nhập số", ex.getMessage(), AlertType.ERROR).showAndWait();
+                new General().MessageBox("Lỗi nhập số", ex.getMessage(), AlertType.ERROR).showAndWait();
             });
             return;
         }
@@ -285,7 +313,7 @@ public class BookController implements Initializable {
             namxb = Integer.parseInt(txtNamXB.getText());
         } catch (NumberFormatException ex) {
             Platform.runLater(() -> {
-            new General().MessageBox("Lỗi nhập số", ex.getMessage(), AlertType.ERROR).showAndWait();
+                new General().MessageBox("Lỗi nhập số", ex.getMessage(), AlertType.ERROR).showAndWait();
             });
             return;
         }

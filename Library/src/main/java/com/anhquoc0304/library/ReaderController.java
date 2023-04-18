@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.input.MouseEvent;
 import pojo.DocGia.Gender;
 import pojo.DocGia.Object;
@@ -106,6 +107,18 @@ public class ReaderController implements Initializable {
                 Logger.getLogger(ReaderController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+        
+        
+    
+    TextFormatter<String> format= new TextFormatter<>(change -> {
+            if (change.getText().matches("[a-zA-Z\\p{L} ]*")) {
+                return change;
+            } else {
+                return null;
+            }
+        });
+        
+        txtName.setTextFormatter(format);
 
         DocGiaServices ds = new DocGiaServices();
         try {
@@ -291,10 +304,13 @@ public class ReaderController implements Initializable {
     public void SaveClick(ActionEvent event) throws SQLException {
         if (tgAdd.isSelected()) {
             AddReader();
+            tgAdd.setSelected(false);
         } else if (tgEdit.isSelected()) {
             EditReader();
+            tgEdit.setSelected(false);
         } else if (tgDelete.isSelected()) {
             DeleteReader();
+            tgDelete.setSelected(false);
         } else {
             new General().MessageBox("Thông Báo", "Bạn chưa chọn bất kỳ hành động nào", AlertType.WARNING).showAndWait();
         }
